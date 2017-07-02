@@ -1,172 +1,211 @@
 <!DOCTYPE html>
-<html>
-
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-        <style type="text/css">
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="keywords" content="weather forecast 天气预报"/>
+	<meta http-equiv="Access-Control-Allow-Origin" content="*"/>
+	<meta name="description" content="一款可以查看最近天气情况的单页面应用。"/>
+	<meta name="robots" content="index,nofollow"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
+	<meta content="telephone=no" name="format-detection" /> 
+	<title>weather</title>
+<style type="text/css">
+html{font-size: 100px;}
+body{
+    padding:0;
+    margin:0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(240, 237, 236, 0.2);
+    overflow: hidden;
 }
-
-html {
-    font-size: 12px;
-    font-family: Ubuntu, simHei, sans-serif;
-    font-weight: 400
+.hide{display: none;}
+header{
+	width: 100%;
+	position: absolute;
+	top: 0rem;
+	height: 0.30rem;
+	text-align: center;
+	font-size: 0.1rem;
+	display:flex;
+	display:-webkit-flex;
+    line-height: 0.3rem;
+    color: #0B2A60;
 }
-
-body {
-    font-size: 1rem
+.headLfet{
+	flex:1;
+	display: inline-block;
+	text-align: left;
 }
-
-table,
-td,
-th {
-    border-collapse: collapse;
-    border-spacing: 0
+.headCenter{
+	flex:2;
+	display: inline-block;
 }
-
-table {
-    width: 100%
+.headRight{
+	flex:1;
+	display: inline-block;
+	text-align: right;
 }
-
-td,
-th {
-    border: 1px solid #bcbcbc;
-    padding: 5px 10px
+.headLeftDes{
+	width: 0.2rem;
+    height: 0.2rem;
+    line-height: 0.3rem;
+    margin-left: 0.15rem;
+    font-size: 0.13rem;
 }
-
-th {
-    background: lightcoral;
-    font-size: 1.2rem;
-    font-weight: 400;
-    color: #fff;
-    cursor: pointer
+.headCenterDes{
+    line-height: 0.3rem;
+    font-size: 0.08rem;
 }
-
-tr:nth-of-type(odd) {
-    background: #fff
+.headRightDes{
+	width: 0.2rem;
+    height: 0.2rem;
+    line-height: 0.3rem;
+    margin-top: 0.05rem;
+    margin-right: 0.15rem;
 }
-
-tr:nth-of-type(even) {
-    background: #eee
+.mainContent{
+	height: auto;
+	width: 100%;
+	overflow-y:auto; 
+	position: absolute;
+	top: 0.30rem;
+	bottom:0rem;
+	font-size: 0.26rem;
 }
-
-fieldset {
-    border: 1px solid #BCBCBC;
-    padding: 15px;
-}
-
-input {
-    outline: none
-}
-
-input[type=text] {
-    border: 1px solid #ccc;
-    padding: .5rem .3rem;
-}
-
-input[type=text]:focus {
-    border-color: #42b983;
-}
-
-button {
-    outline: none;
-    padding: 5px 8px;
-    color: #fff;
-    border: 1px solid #BCBCBC;
-    border-radius: 3px;
-    background-color: lightcoral;
-    cursor: pointer;
-}
-button:hover{
-    opacity: 0.8;
-}
-
-#app {
-    margin: 0 auto;
-    max-width: 640px
-}
-
-.form-group {
-    margin: 10px;
-}
-
-.form-group > label {
-    display: inline-block;
-    width: 10rem;
-    text-align: right;
-}
-
-.form-group > input,
-.form-group > select {
-    display: inline-block;
-    height: 2.5rem;
-    line-height: 2.5rem;
-}
-
-.text-center{
+.mainContent::-webkit-scrollbar {display:none}
+.mainContent::-moz-scrollbar {display:none}
+.mainContent::-ms-scrollbar {display:none}
+.todayInfo{
+	padding: 0.4rem 0.5rem;
     text-align: center;
+    color: #0B2A60;
 }
-
-.pagination {
+.todayInfoWeatherType{
+	font-size: 0.16rem;
+    font-weight: 700;
+    padding: 0.1rem 0rem 0rem;
+}
+.todayInfoWeatherTemperature{
+	font-size: 1rem;
+	display:flex;
+	display:-webkit-flex;
+	height: 1.1rem;
+}
+.todayInfoWeatherTemperatureLeft{
+	flex:1;
+	display: inline-block;
+	text-align: right;
+}
+.todayInfoWeatherTemperatureCenter{
+	flex:2;
+	display: inline-block;
+}
+.todayInfoWeatherTemperatureRight{
+	flex:1;
+	display: inline-block;
+	font-size: 0.7rem;
+	text-align: left;
+}
+.todayInfoWeatherPMDiv{
+	border: 0.02rem solid;
+    border-radius: 0.1rem;
+    height: 0.2rem;
     display: inline-block;
-    padding-left: 0;
-    margin: 21px 0;
-    border-radius: 3px;
+    margin-top: 0.1rem;
 }
-
-.pagination > li {
-    display: inline;
-}
-
-.pagination > li > a {
+.todayInfoWeatherPMImg{
+	width: 0.16rem;
+    height: 0.16rem;
+    background: url(IMG/bluePM.png) no-repeat center;
+    background-size: 100%;
+    display: inline-block;
     position: relative;
-    float: left;
-    padding: 6px 12px;
-    line-height: 1.5;
-    text-decoration: none;
-    color: #009a61;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    margin-left: -1px;
-    list-style: none;
+    top: -0.1rem;
 }
-
-.pagination > li > a:hover {
-    background-color: #eee;
+.todayInfoWeatherPMDes{
+	font-size: 0.12rem;
+    position: relative;
+    top: -0.13rem;
+    left: -0.05rem;
 }
+</style>
+</head>
+<body class="hide" id="app">
+<!--蓝色0B2A60-->
+	<header>
+		<div class="headLfet">
+			<span class="headLeftDes">昆山市 30°</span>
+		</div>
+		<div class="headCenter">
+			<span class="headCenterDes">昆山市</span>
+		</div>
+		<div class="headRight">
+			<img src="IMG/blueSet.png" alt="设置" class="headRightDes">
+		</div>
+	</header>
+	<div class="mainContent">
+		<div class="todayInfo">
+			<div class="todayInfoWeatherType">阴</div>
+			<div class="todayInfoWeatherTemperature">
+				<span class="todayInfoWeatherTemperatureLeft">-</span>
+				<span class="todayInfoWeatherTemperatureCenter">30</span>
+				<span class="todayInfoWeatherTemperatureRight">°</span>
+			</div>
+			
+			<div class="todayInfoWeatherPM">
+				<span class="todayInfoWeatherPMDiv">
+					<span class="todayInfoWeatherPMImg"></span>
+					<span class="todayInfoWeatherPMDes">1级 优</span>
+				</span>
+			</div>
+		</div>
+		<div class="weekInfo">
 
-.pagination .active {
-    color: #fff;
-    background-color: #009a61;
-    border-left: none;
-    border-right: none;
-}
+		</div>
+		<div class="lifeInfo">
 
-.pagination .active:hover {
-    background: #009a61;
-    cursor: default;
-}
+		</div>
 
-.pagination > li:first-child > a .p {
-    border-bottom-left-radius: 3px;
-    border-top-left-radius: 3px;
-}
 
-.pagination > li:last-child > a {
-    border-bottom-right-radius: 3px;
-    border-top-right-radius: 3px;
-}
-        </style>
-    </head>
 
-    <body>
-        <div id="app">
 
-            <fieldset>
+
+
+
+
+
+
+
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!--<fieldset>
                 <legend>
                     Person List
                 </legend>
@@ -207,12 +246,12 @@ button:hover{
                     <td :class="'text-center'"><button @click="deletePerson(index)">Delete</button></td>
                 </tr>
             </tbody>
-        </table>
-        </div>
+        </table>-->
     </body>
-    <!-- <script src="js\node_modules\vue\dist\vue.js"></script> -->
-    <script src="JS/vue.min.js"></script>
     <script type="text/javascript" src="JS/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="JS/autoAdaptation.js"></script>
+    <script src="JS/vue.min.js"></script>
+    
     <script type="text/javascript" src="http://www.coding123.net/getip.ashx?js=1"></script>
     <script>
         var vm = new Vue({
@@ -253,10 +292,13 @@ button:hover{
                 }
             }
         })
-function findWeather() {
+/*function findWeather() {
   var cityUrl = 'http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js';
+
   $.getScript(cityUrl, function(script, textStatus, jqXHR) {
     var citytq = remote_ip_info.city ;// 获取城市
+    alert(citytq)
+    return;
     var url = "http://php.weather.sina.com.cn/iframe/index/w_cl.php?code=js&city=" + citytq + "&day=0&dfc=3";
     $.ajax({
       url : url,
@@ -278,7 +320,7 @@ function findWeather() {
   });
 }
   
-findWeather();
+findWeather();*/
     </script>
 
 </html>
