@@ -109,10 +109,12 @@ header{
 }
 .todayInfoWeatherPMDiv{
 	border: 0.02rem solid;
-    border-radius: 0.1rem;
+    border-radius: 0.2rem;
     height: 0.2rem;
     display: inline-block;
     margin-top: 0.1rem;
+    background-color: transparent;
+    outline: none;
 }
 .todayInfoWeatherPMImg{
 	width: 0.16rem;
@@ -121,13 +123,89 @@ header{
     background-size: 100%;
     display: inline-block;
     position: relative;
-    top: -0.1rem;
+    top: -0.01rem;
 }
 .todayInfoWeatherPMDes{
 	font-size: 0.12rem;
     position: relative;
-    top: -0.13rem;
+    top: -0.04rem;
     left: -0.05rem;
+}
+.weekInfo{
+	margin: 0rem 0.15rem;
+    border-top: 0.01rem solid #DDD;
+    padding: 0.1rem 0rem;
+}
+.weekInfoRow{
+	display:flex;
+	display:-webkit-flex;
+	font-size: 0.14rem;
+	height: 0.2rem;
+	line-height: 0.2rem;
+	padding: 0.05rem;
+}
+.weekInfoRowLeft{
+	flex:1;
+	display: inline-block;
+	text-align: left;
+}
+.weekInfoRowCenter{
+	flex:1;
+	display: inline-block;
+	text-align: center;
+}
+.weekInfoRowCenterImg{
+	width: 0.7rem;
+}
+.weekInfoRowRight{
+	flex:1;
+	display: inline-block;
+	text-align: right;
+}
+.otherInfo{
+	display: flex;
+    display: -webkit-flex;
+    height: 0.4rem;
+    border-top: 0.01rem solid #DDD;
+    padding: 0.1rem 0rem; 
+}
+.otherInfoCenter{
+	flex:1;
+	display: inline-block;
+	text-align: center;
+}
+.otherInfoCenterTop{
+	height: 0.2rem;
+    line-height: 0.2rem;
+    font-size: 0.1rem;
+}
+.otherInfoCenterTopImg{
+	width: 0.1rem;
+    height: 0.1rem;
+    display: inline-block;
+    font-size: 0.1rem;
+}
+.imgLeft{
+	background-image: url(IMG/其他/风向.png);
+    background-size: 100%;
+}
+.imgCenter{
+	background-image: url(IMG/其他/水滴.png);
+    background-size: 100%;
+}
+.imgRight{
+	background-image: url(IMG/其他/温度计.png);
+    background-size: 100%;
+}
+.otherInfoCenterTopName{
+	font-size: 0.1rem;
+	color: #8f8f8f;
+    display: inline-block;
+}
+.otherInfoCenterBottom{
+	height: 0.2rem;
+    line-height: 0.2rem;
+    font-size: 0.14rem;
 }
 </style>
 </head>
@@ -154,14 +232,61 @@ header{
 			</div>
 			
 			<div class="todayInfoWeatherPM">
-				<span class="todayInfoWeatherPMDiv">
+				<button class="todayInfoWeatherPMDiv">
 					<span class="todayInfoWeatherPMImg"></span>
 					<span class="todayInfoWeatherPMDes">1级 优</span>
-				</span>
+				</button>
 			</div>
 		</div>
 		<div class="weekInfo">
-
+			<div class="weekInfoRow">
+				<span class="weekInfoRowLeft">今天</span>
+				<span class="weekInfoRowCenter"><img src="IMG/天气png/小雨.png" alt="小雨" class="weekInfoRowCenterImg"></span>
+				<span class="weekInfoRowRight">29°~33°</span>
+			</div>
+			<div class="weekInfoRow">
+				<span class="weekInfoRowLeft">明天</span>
+				<span class="weekInfoRowCenter"><img src="IMG/天气png/大雨.png" alt="大雨" class="weekInfoRowCenterImg"></span>
+				<span class="weekInfoRowRight">27°~31°</span>
+			</div>
+			<div class="weekInfoRow">
+				<span class="weekInfoRowLeft">明天</span>
+				<span class="weekInfoRowCenter"><img src="IMG/天气png/多云.png" alt="多云" class="weekInfoRowCenterImg"></span>
+				<span class="weekInfoRowRight">27°~31°</span>
+			</div>
+			<div class="weekInfoRow">
+				<span class="weekInfoRowLeft">明天</span>
+				<span class="weekInfoRowCenter"><img src="IMG/天气png/阴.png" alt="阴" class="weekInfoRowCenterImg"></span>
+				<span class="weekInfoRowRight">27°~31°</span>
+			</div>
+			<div class="weekInfoRow">
+				<span class="weekInfoRowLeft">明天</span>
+				<span class="weekInfoRowCenter"><img src="IMG/天气png/晴.png" alt="晴" class="weekInfoRowCenterImg"></span>
+				<span class="weekInfoRowRight">27°~31°</span>
+			</div>
+		</div>
+		<div class="otherInfo">
+			<div class="otherInfoCenter">
+				<div class="otherInfoCenterTop">
+					<span class="otherInfoCenterTopImg imgLeft"></span>
+					<span class="otherInfoCenterTopName">西风</span>
+				</div>
+				<div class="otherInfoCenterBottom">1级</div>
+			</div>
+			<div class="otherInfoCenter">
+				<div class="otherInfoCenterTop">
+					<span class="otherInfoCenterTopImg imgCenter"></span>
+					<span class="otherInfoCenterTopName">空气湿度</span>
+				</div>
+				<div class="otherInfoCenterBottom">66%</div>
+			</div>
+			<div class="otherInfoCenter">
+				<div class="otherInfoCenterTop">
+					<span class="otherInfoCenterTopImg imgRight"></span>
+					<span class="otherInfoCenterTopName">体感温度</span>
+				</div>
+				<div class="otherInfoCenterBottom">29℃</div>
+			</div>
 		</div>
 		<div class="lifeInfo">
 
