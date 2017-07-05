@@ -318,7 +318,10 @@ header{
                 PM25Info: {},
                 weekInfo: [],
                 todayTemp: false,
-                waitHide: false
+                waitHide: false,
+                todayShow: false,
+                PMShow: false,
+                weekShow: false
             },
             created: function() {
 				this.IP = ip.substr(1,ip.length);
@@ -350,6 +353,10 @@ header{
 			            if (parseInt(info.temperature_curr) < 0) {
 			            	that.todayTemp = true;
 			            }
+			            that.todayShow = true;
+			            if (todayShow && PMShow && weekShow) {
+			            	that.waitHide = true;
+			            }
 
 		            },function(){
 		            	console.log('获取当前温度信息失败');
@@ -366,6 +373,10 @@ header{
 			            pm25Info.advice = info.aqi_remark;//空气质量建议
 
 			            that.PM25Info = pm25Info;
+			            that.PMShow = true;
+			            if (todayShow && PMShow && weekShow) {
+			            	that.waitHide = true;
+			            }
 
 		            },function(){
 		            	console.log('获取PM2.5信息失败');
@@ -403,7 +414,10 @@ header{
 			            	weekInfoObj = {};
 			            }
 			            that.weekInfo = weekInfo;
-			            that.waitHide = true;
+			            that.todayShow = true;
+			            if (todayShow && PMShow && weekShow) {
+			            	that.waitHide = true;
+			            }
 
 		            },function(){
 		            	console.log('获取一周内天气信息失败');
