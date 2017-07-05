@@ -223,6 +223,10 @@ header{
 .show{
 	display: block ! important;
 }
+.showFlex{
+	display:flex ! important;
+	display:-webkit-flex ! important;
+}
 .waitImg{
 	z-index: 100;
 	position: fixed;
@@ -241,7 +245,7 @@ header{
 		<img src="IMG/其他/wait.jpg" alt="请稍后..." class="waitImg">
 	</div>
 <!--蓝色0B2A60-->
-	<header class="hide" v-bind:class="{show: waitHide}">
+	<header class="hide" v-bind:class="{showFlex: waitHide}">
 		<div class="headLfet">
 			<span class="headLeftDes">{{todayInfo.cityTemp}}</span>
 		</div>
