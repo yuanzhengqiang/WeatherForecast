@@ -19,7 +19,11 @@ body{
     background-color: rgba(240, 237, 236, 0.2);
     overflow: hidden;
 }
-.hide{display: none;}
+#app{
+	width: 100vw;
+    height: 100vh;
+}
+.hide, .waitHide{display: none ! important;}
 header{
 	width: 100%;
 	position: absolute;
@@ -51,7 +55,6 @@ header{
     height: 0.2rem;
     line-height: 0.3rem;
     margin-left: 0.15rem;
-    font-size: 0.13rem;
 }
 .headCenterDes{
     line-height: 0.3rem;
@@ -96,6 +99,10 @@ header{
 	flex:1;
 	display: inline-block;
 	text-align: right;
+	visibility: hidden
+}
+.todayTemp{
+	visibility: visible;
 }
 .todayInfoWeatherTemperatureCenter{
 	flex:2;
@@ -207,215 +214,222 @@ header{
     line-height: 0.2rem;
     font-size: 0.14rem;
 }
+.wait{
+	width: 100vw;
+	height: 100vh;
+	display: block;
+	overflow: hidden;
+}
+.waitImg{
+	z-index: 100;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	webkit-transform: translateX(-50%) translateY(-50%);
+	-moz-transform: translateX(-50%) translateY(-50%);
+	-ms-transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);
+}
 </style>
 </head>
-<body class="hide" id="app">
+<body>
+<div id="app" class="hide">
+	<div class="wait" v-bind:class="{waitHide: waitHide}">
+		<img src="IMG/其他/wait.jpg" alt="请稍后..." class="waitImg">
+	</div>
 <!--蓝色0B2A60-->
-	<header>
+	<header v-bind:class="{hide: !waitHide}">
 		<div class="headLfet">
-			<span class="headLeftDes">昆山市 30°</span>
+			<span class="headLeftDes">{{todayInfo.cityTemp}}</span>
 		</div>
 		<div class="headCenter">
-			<span class="headCenterDes">昆山市</span>
+			<span class="headCenterDes">{{todayInfo.city}}</span>
 		</div>
 		<div class="headRight">
 			<img src="IMG/blueSet.png" alt="设置" class="headRightDes">
 		</div>
 	</header>
-	<div class="mainContent">
+	<div class="mainContent" v-bind:class="{hide: !waitHide}">
 		<div class="todayInfo">
-			<div class="todayInfoWeatherType">阴</div>
+			<div class="todayInfoWeatherType">{{todayInfo.currentWeather}}</div>
 			<div class="todayInfoWeatherTemperature">
-				<span class="todayInfoWeatherTemperatureLeft">-</span>
-				<span class="todayInfoWeatherTemperatureCenter">30</span>
+				<span class="todayInfoWeatherTemperatureLeft" v-bind:class="{ todayTemp: todayTemp}">-</span>
+				<span class="todayInfoWeatherTemperatureCenter">{{todayInfo.currentTemp}}</span>
 				<span class="todayInfoWeatherTemperatureRight">°</span>
 			</div>
 			
 			<div class="todayInfoWeatherPM">
 				<button class="todayInfoWeatherPMDiv">
 					<span class="todayInfoWeatherPMImg"></span>
-					<span class="todayInfoWeatherPMDes">1级 优</span>
+					<span class="todayInfoWeatherPMDes">{{PM25Info.PMInfo}}</span>
 				</button>
 			</div>
 		</div>
 		<div class="weekInfo">
-			<div class="weekInfoRow">
-				<span class="weekInfoRowLeft">今天</span>
-				<span class="weekInfoRowCenter"><img src="IMG/天气png/小雨.png" alt="小雨" class="weekInfoRowCenterImg"></span>
-				<span class="weekInfoRowRight">29°~33°</span>
-			</div>
-			<div class="weekInfoRow">
-				<span class="weekInfoRowLeft">明天</span>
-				<span class="weekInfoRowCenter"><img src="IMG/天气png/大雨.png" alt="大雨" class="weekInfoRowCenterImg"></span>
-				<span class="weekInfoRowRight">27°~31°</span>
-			</div>
-			<div class="weekInfoRow">
-				<span class="weekInfoRowLeft">明天</span>
-				<span class="weekInfoRowCenter"><img src="IMG/天气png/多云.png" alt="多云" class="weekInfoRowCenterImg"></span>
-				<span class="weekInfoRowRight">27°~31°</span>
-			</div>
-			<div class="weekInfoRow">
-				<span class="weekInfoRowLeft">明天</span>
-				<span class="weekInfoRowCenter"><img src="IMG/天气png/阴.png" alt="阴" class="weekInfoRowCenterImg"></span>
-				<span class="weekInfoRowRight">27°~31°</span>
-			</div>
-			<div class="weekInfoRow">
-				<span class="weekInfoRowLeft">明天</span>
-				<span class="weekInfoRowCenter"><img src="IMG/天气png/晴.png" alt="晴" class="weekInfoRowCenterImg"></span>
-				<span class="weekInfoRowRight">27°~31°</span>
+			<div class="weekInfoRow" v-for="week in weekInfo">
+				<span class="weekInfoRowLeft">{{week.newDate}}</span>
+				<span class="weekInfoRowCenter"><img  v-bind:src="week.weatherSrc" v-bind:alt="week.weatherAlt" class="weekInfoRowCenterImg"></span>
+				<span class="weekInfoRowRight">{{week.temp}}</span>
 			</div>
 		</div>
 		<div class="otherInfo">
 			<div class="otherInfoCenter">
 				<div class="otherInfoCenterTop">
 					<span class="otherInfoCenterTopImg imgLeft"></span>
-					<span class="otherInfoCenterTopName">西风</span>
+					<span class="otherInfoCenterTopName">{{todayInfo.wind}}</span>
 				</div>
-				<div class="otherInfoCenterBottom">1级</div>
+				<div class="otherInfoCenterBottom">{{todayInfo.winp}}</div>
 			</div>
 			<div class="otherInfoCenter">
 				<div class="otherInfoCenterTop">
 					<span class="otherInfoCenterTopImg imgCenter"></span>
 					<span class="otherInfoCenterTopName">空气湿度</span>
 				</div>
-				<div class="otherInfoCenterBottom">66%</div>
+				<div class="otherInfoCenterBottom">{{todayInfo.humidity}}</div>
 			</div>
 			<div class="otherInfoCenter">
 				<div class="otherInfoCenterTop">
 					<span class="otherInfoCenterTopImg imgRight"></span>
 					<span class="otherInfoCenterTopName">体感温度</span>
 				</div>
-				<div class="otherInfoCenterBottom">29℃</div>
+				<div class="otherInfoCenterBottom">{{todayInfo.feelTemp}}</div>
 			</div>
 		</div>
 		<div class="lifeInfo">
 
 		</div>
-
-
-
-
-
-
-
-
-
-
-
 	</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <!--<fieldset>
-                <legend>
-                    Person List
-                </legend>
-                <div class="form-group">
-                    <label>Name:</label>
-                    <input type="text" v-model="newPerson.name"/>
-                </div>
-                <div class="form-group">
-                    <label>Age:</label>
-                    <input type="text" v-model="newPerson.age"/>
-                </div>
-                <div class="form-group">
-                    <label>Sex:</label>
-                    <select v-model="newPerson.sex">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-                </div>
-                <div class="form-group">
-                    <label></label>
-                    <button @click="createPerson">Create</button>
-                </div>
-        </fieldset>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Age</th>
-                    <th>Sex</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(person, index) in people" data-index="{{index}}">
-                    <td>{{ person.name }}</td>
-                    <td>{{ person.age }}</td>
-                    <td>{{ person.sex }}</td>
-                    <td :class="'text-center'"><button @click="deletePerson(index)">Delete</button></td>
-                </tr>
-            </tbody>
-        </table>-->
-    </body>
-    <script type="text/javascript" src="JS/jquery-3.2.1.js"></script>
-    <script type="text/javascript" src="JS/autoAdaptation.js"></script>
-    <script src="JS/vue.min.js"></script>
-    
+</div>
+</body>
     <script type="text/javascript" src="http://www.coding123.net/getip.ashx?js=1"></script>
+    <script type="text/javascript" src="JS/autoAdaptation.js"></script>
+    <script src="JS/vue.js"></script>
+    <script type="text/javascript" src="JS/vue-resource.js"></script>
     <script>
         var vm = new Vue({
             el: "#app",
             data: {
-                newPerson: {
-                    name: "",
-                    age: 0,
-                    sex: "Male"
-                },
-            people: [{
-                    name: "Richard",
-                    age: 30,
-                    sex: "Male"
-                }, {
-                    name: "Roy",
-                    age: 26,
-                    sex: "Male"
-                }, {
-                    name: "Sansa",
-                    age: 22,
-                    sex: "Female"
-                }, {
-                    name: "Micheal",
-                    age: 36,
-                    sex: "Male"
-                }]
+                IP: "",
+                todayUrl: "",
+               	weekUrl: "",
+                PM25Url: "",
+                lifeUrl: "",
+                todayInfo: {},
+                PM25Info: {},
+                weekInfo: [],
+                todayTemp: false,
+                waitHide: false
             },
-            methods:{
-                createPerson: function(){
-                    this.people.push(this.newPerson);
-                    // 添加完newPerson对象后，重置newPerson对象
-                    this.newPerson = {name: "", age: 0, sex: "Male"}
-                },
-                deletePerson: function(index){
-                    // 删一个数组元素
-                    this.people.splice(index,1);
-                }
-            }
+            created: function() {
+				this.IP = ip.substr(1,ip.length);
+				this.todayUrl = `http://api.k780.com/?app=weather.today&weaid=${this.IP}&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json`;
+				this.weekUrl = `http://api.k780.com/?app=weather.future&weaid=${this.IP}&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json`;
+				this.PM25Url = `http://api.k780.com/?app=weather.pm25&weaid=${this.IP}&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json`;
+				this.lifeUrl = `http://api.k780.com/?app=weather.lifeindex&weaid=${this.IP}&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json`;
+				this.getTodayInfo();
+				this.getPM25Info();
+				this.getWeekInfo();
+			},
+			methods: {
+			    getTodayInfo: function() {//获取当前温度信息
+			    	var that = this,
+			    		todayInfo = {};
+					this.$http.jsonp(this.todayUrl,{jsonp:'jsoncallback'}).then(function(data){
+			        	let info = data.data.result;
+
+			            todayInfo.city = `${info.citynm}市`;//当前城市
+			            todayInfo.cityTemp = `${info.citynm}市 ${info.temperature_curr}`;//当前城市温度
+			            todayInfo.humidity = info.humidity;//空气湿度
+			            todayInfo.currentTemp = parseInt(info.temperature_curr);//当前温度
+			            todayInfo.currentWeather = info.weather_curr;//当前天气
+			            todayInfo.wind = info.wind;//风向
+			            todayInfo.winp = info.winp;//风速等级
+			            todayInfo.feelTemp = this.getFeelTemp(info.temperature_curr, info.humidity) + "℃";//体感温度
+
+			            that.todayInfo = todayInfo;
+			            if (parseInt(info.temperature_curr) < 0) {
+			            	that.todayTemp = true;
+			            }
+
+		            },function(){
+		            	console.log('获取当前温度信息失败');
+		            });
+				},
+				getPM25Info: function() {//获取PM2.5信息
+					var that = this,
+						pm25Info = {};
+					this.$http.jsonp(this.PM25Url,{jsonp:'jsoncallback'}).then(function(data){
+			        	let info = data.data.result;
+
+			            pm25Info.PMInfo = `${info.aqi} ${info.aqi_levnm}`;//空气质量信息
+			            pm25Info.PMLevel = info.aqi_levid;//空气质量等级
+			            pm25Info.advice = info.aqi_remark;//空气质量建议
+
+			            that.PM25Info = pm25Info;
+
+		            },function(){
+		            	console.log('获取PM2.5信息失败');
+		            });
+				},
+				getWeekInfo: function() {//获取一周内天气信息
+					var that = this;
+					this.$http.jsonp(this.weekUrl,{jsonp:'jsoncallback'}).then(function(data){
+			        	let info = data.data.result,
+			        		weekInfoObj = {},
+							weekInfo = [];
+
+			            for (let i = 0; i < info.length; i++) {
+			            	let weatherText = info[i].weather.indexOf("转") == -1 ? info[i].weather : info[i].weather.split("转")[0],
+			            		days = info[i].days.replace(/-0/g, "-"),
+			            		todayDate = days.substr(5, days.length), 
+			            		weekDay = "",
+			            		temp = `${info[i].temp_low}° ~ ${info[i].temp_high}°`;
+
+			            	if (i == 0) {
+			            		weekDay = "今天";
+			            	} else if (i == 1) {
+			            		weekDay = "明天";
+			            	} else {
+			            		weekDay = info[i].week.replace("星期", "周");
+			            	}
+
+			            	weekInfoObj.temp = temp;//温度区间
+			            	weekInfoObj.weatherAlt = weatherText;//天气情况
+			            	weekInfoObj.weatherSrc = `IMG/天气/${weatherText}.png`;//天气URL
+			            	weekInfoObj.newDate = `${weekDay} ${todayDate}`;//当天日期
+
+			            	//weekInfo.push(weekInfoObj);
+			            	weekInfo[i] = weekInfoObj;
+			            	weekInfoObj = {};
+			            }
+			            that.weekInfo = weekInfo;
+			            that.waitHide = true;
+
+		            },function(){
+		            	console.log('获取一周内天气信息失败');
+		            });
+				},
+				getFeelTemp: function(t, r) {//计算体感温度
+					var T = parseInt(t.replace("℃", "")),
+						RH = parseInt(r.replace("%", "")),
+					    T = 1.8 * T + 32,
+						HI = 0.5 * (T + 61 + (T - 68) * 1.2 + RH * 0.094), 
+						ADJUSTMENT;
+
+				    if (HI >= 80) {
+				    	HI = -42.379 + 2.04901523 * T + 10.14333127 * RH - 0.22475541 * T * RH - 0.00683783 * T * T - 0.05481717 * RH * RH + 0.00122874 * T * T * RH + 0.00085282 * T * RH * RH - 0.00000199 * T * T * RH * RH;
+				        if (RH < 13 && 80 < T && T < 112) {
+				            ADJUSTMENT = (13 - RH) / 4 * math.sqrt((17 - abs(T - 95)) / 17);
+				            HI = HI - ADJUSTMENT;
+				        } else if (RH > 85 && 80 < T && T< 87) {
+				            ADJUSTMENT = (RH - 85) * (87 - T) / 50;
+				            HI += ADJUSTMENT;
+				        }
+				    }  
+				        
+				    return Math.round((HI - 32) / 1.8, 2);
+				}
+			}
         })
 /*function findWeather() {
   var cityUrl = 'http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js';
