@@ -220,6 +220,9 @@ header{
 	display: block;
 	overflow: hidden;
 }
+.show{
+	display: block ! important;
+}
 .waitImg{
 	z-index: 100;
 	position: fixed;
@@ -238,7 +241,7 @@ header{
 		<img src="IMG/其他/wait.jpg" alt="请稍后..." class="waitImg">
 	</div>
 <!--蓝色0B2A60-->
-	<header v-bind:class="{hide: !waitHide}">
+	<header class="hide" v-bind:class="{show: waitHide}">
 		<div class="headLfet">
 			<span class="headLeftDes">{{todayInfo.cityTemp}}</span>
 		</div>
@@ -249,7 +252,7 @@ header{
 			<img src="IMG/blueSet.png" alt="设置" class="headRightDes">
 		</div>
 	</header>
-	<div class="mainContent" v-bind:class="{hide: !waitHide}">
+	<div class="mainContent hide" v-bind:class="{show: waitHide}">
 		<div class="todayInfo">
 			<div class="todayInfoWeatherType">{{todayInfo.currentWeather}}</div>
 			<div class="todayInfoWeatherTemperature">
