@@ -309,8 +309,8 @@ header{
 	</div>
 </div>
 </body>
-	<!--<script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>-->
-    <script type="text/javascript" src="http://www.coding123.net/getip.ashx?js=1"></script>
+	<!--<script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
+    <script type="text/javascript" src="http://www.coding123.net/getip.ashx?js=1"></script>-->
     <script type="text/javascript" src="JS/autoAdaptation.js"></script>
     <script src="JS/vue.js"></script>
     <script type="text/javascript" src="JS/vue-resource.js"></script>
@@ -333,7 +333,7 @@ header{
                 weekShow: false
             },
             created: function() {
-				this.IP = ip.substr(1,ip.length);
+				this.IP =  "苏州";
 				this.todayUrl = `http://api.k780.com/?app=weather.today&weaid=${this.IP}&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json`;
 				this.weekUrl = `http://api.k780.com/?app=weather.future&weaid=${this.IP}&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json`;
 				this.PM25Url = `http://api.k780.com/?app=weather.pm25&weaid=${this.IP}&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json`;
