@@ -370,7 +370,7 @@ header{
 			    		todayInfo = {};
 					this.$http.jsonp(this.todayUrl,{jsonp:'jsoncallback'}).then(function(data){
 			        	var info = data.data.result;
-
+			        	alert(info.citynm);
 			            todayInfo.city = info.citynm + "市";//当前城市
 			            todayInfo.cityTemp = info.citynm + "市 " + info.temperature_curr;//当前城市温度
 			            todayInfo.humidity = info.humidity;//空气湿度
@@ -398,7 +398,7 @@ header{
 						pm25Info = {};
 					this.$http.jsonp(this.PM25Url,{jsonp:'jsoncallback'}).then(function(data){
 			        	var info = data.data.result;
-
+			        	alert(info.aqi_remark);
 			            pm25Info.PMInfo = info.aqi + " " + info.aqi_levnm;//空气质量信息
 			            pm25Info.PMLevel = info.aqi_levid;//空气质量等级
 			            pm25Info.advice = info.aqi_remark;//空气质量建议
@@ -419,7 +419,7 @@ header{
 			        	var info = data.data.result,
 			        		weekInfoObj = {},
 							weekInfo = [];
-
+							alert(info.length);
 			            for (var i = 0; i < info.length; i++) {
 			            	var weatherText = info[i].weather.indexOf("转") == -1 ? info[i].weather : info[i].weather.split("转")[0],
 			            		days = info[i].days.replace(/-0/g, "-"),
