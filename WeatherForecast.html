@@ -356,6 +356,7 @@ header{
             mounted: function() {
 				//this.IP = ip.substr(1,ip.length);
 				this.IP = remote_ip_info['city'];
+				alert(this.IP);
 				this.todayUrl = "http://api.k780.com/?app=weather.today&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json";
 				this.weekUrl = "http://api.k780.com/?app=weather.future&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json";
 				this.PM25Url = "http://api.k780.com/?app=weather.pm25&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json";
@@ -366,6 +367,7 @@ header{
 			},
 			methods: {
 			    getTodayInfo: function() {//获取当前温度信息
+			    	alert(1);
 			    	var that = this,
 			    		todayInfo = {};
 					this.$http.jsonp(this.todayUrl,{jsonp:'jsoncallback'}).then(function(data){
@@ -394,6 +396,7 @@ header{
 		            });
 				},
 				getPM25Info: function() {//获取PM2.5信息
+					alert(2);
 					var that = this,
 						pm25Info = {};
 					this.$http.jsonp(this.PM25Url,{jsonp:'jsoncallback'}).then(function(data){
@@ -414,6 +417,7 @@ header{
 		            });
 				},
 				getWeekInfo: function() {//获取一周内天气信息
+					alert(3);
 					var that = this;
 					this.$http.jsonp(this.weekUrl,{jsonp:'jsoncallback'}).then(function(data){
 			        	var info = data.data.result,
