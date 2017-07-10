@@ -173,14 +173,18 @@ header{
 .otherInfo{
 	display: flex;
     display: -webkit-flex;
-    height: 0.4rem;
-    border-top: 0.01rem solid #DDD;
-    padding: 0.1rem 0rem; 
+    height: 0.6rem;
+    border-top: 0.01rem solid #f1f1f1;
+    padding: 0.08rem 0rem;
+	background-color: #f1f1f1;
+
 }
 .otherInfoCenter{
 	flex:1;
 	display: inline-block;
 	text-align: center;
+	background-color: #FFF;
+	padding: 0.1rem 0rem;
 }
 .otherInfoCenterTop{
 	height: 0.2rem;
@@ -238,9 +242,39 @@ header{
 	-ms-transform: translateX(-50%) translateY(-50%);
 	transform: translateX(-50%) translateY(-50%);
 }
+.lifeInfo{
+	background-color: #f1f1f1;
+	padding: 0rem 0.02rem;
+}
+.lifeInfoBox{
+	display:flex;
+	display:-webkit-flex;
+}
+.lifeInfoBoxDes{
+	flex: 1;
+	display: inline-block;
+	text-align: center;
+	padding: 0.2rem;
+	margin: 0.015rem;
+	background-color: #FFF;
+	height: 0.8rem;
+
+}
+.lifeInfoTopImg{
+	width: 0.3rem;
+	height: 0.3rem;
+}
+.lifeInfoCenter{
+	font-size: 0.09rem;
+	color: #888888;
+}
+.lifeInfoBottom{
+	font-size: 0.16rem;
+    font-weight: 700;
+}
 </style>
-<!--<script type="text/javascript" src="http://www.coding123.net/getip.ashx?js=1"></script>
-<script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>-->
+<!--<script type="text/javascript" src="http://www.coding123.net/getip.ashx?js=1"></script>-->
+<script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
 </head>
 <body>
 <div id="app" class="hide">
@@ -306,7 +340,52 @@ header{
 			</div>
 		</div>
 		<div class="lifeInfo">
-
+			<div class="lifeInfoBox">
+				<div class="lifeInfoBoxDes">
+					<div>
+						<img src="IMG/生活/污染.png" class="lifeInfoTopImg" alt="污染">
+					</div>
+					<div class="lifeInfoCenter">污染指数</div>
+					<div class="lifeInfoBottom">良</div>
+				</div>
+				<div class="lifeInfoBoxDes">
+					<div>
+						<img src="IMG/生活/感冒.png" class="lifeInfoTopImg" alt="感冒">
+					</div>
+					<div class="lifeInfoCenter">感冒指数</div>
+					<div class="lifeInfoBottom">易发</div>
+				</div>
+				<div class="lifeInfoBoxDes">
+					<div>
+						<img src="IMG/生活/洗车.png" class="lifeInfoTopImg" alt="洗车">
+					</div>
+					<div class="lifeInfoCenter">洗车指数</div>
+					<div class="lifeInfoBottom">较不宜</div>
+				</div>
+			</div>
+			<div class="lifeInfoBox">
+				<div class="lifeInfoBoxDes">
+					<div>
+						<img src="IMG/生活/穿衣.png" class="lifeInfoTopImg" alt="穿衣">
+					</div>
+					<div class="lifeInfoCenter">穿衣指数</div>
+					<div class="lifeInfoBottom">炎热</div>
+				</div>
+				<div class="lifeInfoBoxDes">
+					<div>
+						<img src="IMG/生活/紫外线.png" class="lifeInfoTopImg" alt="紫外线">
+					</div>
+					<div class="lifeInfoCenter">紫外线指数</div>
+					<div class="lifeInfoBottom">中等</div>
+				</div>
+				<div class="lifeInfoBoxDes">
+					<div>
+						<img src="IMG/生活/运动.png" class="lifeInfoTopImg" alt="运动">
+					</div>
+					<div class="lifeInfoCenter">运动指数</div>
+					<div class="lifeInfoBottom">较不宜</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -319,7 +398,7 @@ header{
         var vm = new Vue({
             el: "#app",
             data: {
-                IP: "苏州",
+                IP: "",
                 todayUrl: "",
                	weekUrl: "",
                 PM25Url: "",
@@ -347,6 +426,20 @@ header{
 	                	newDate: ""
                 	}
                 ],
+                lifeInfo:{
+                	makeUp: "",
+                	makeUpDes: "",
+                	cold: "",
+                	coldDes: "",
+                	cleanCar: "",
+                	cleanCarDes: "",
+                	dress: "",
+                	dressDes: "",
+                	UV: "",
+                	UVDes: "",
+                	exercise: "",
+                	exerciseDes: ""
+                },
                 todayTemp: false,
                 waitHide: false,
                 todayShow: false,
@@ -355,7 +448,7 @@ header{
             },
             mounted: function() {
 				//this.IP = ip.substr(1,ip.length);
-				//this.IP = remote_ip_info['city'];
+				this.IP = remote_ip_info['city'];
 				this.todayUrl = "http://api.k780.com/?app=weather.today&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json&jsoncallback=data";
 				this.weekUrl = "http://api.k780.com/?app=weather.future&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json&jsoncallback=data";
 				this.PM25Url = "http://api.k780.com/?app=weather.pm25&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json&jsoncallback=data";
@@ -363,6 +456,7 @@ header{
 				this.getTodayInfo();
 				this.getPM25Info();
 				this.getWeekInfo();
+				this.getLifeInfo();
 			},
 			methods: {
 			    getTodayInfo: function() {//获取当前温度信息
@@ -417,7 +511,72 @@ header{
 			        	var info = data.data.result,
 			        		weekInfoObj = {},
 							weekInfo = [];
-			            for (var i = 0; i < info.length; i++) {
+			            for (let i = 0; i < info.length; i++) {
+			            	var weatherText = info[i].weather.indexOf("转") == -1 ? info[i].weather : info[i].weather.split("转")[0],
+			            		days = info[i].days.replace(/-0/g, "-"),
+			            		todayDate = days.substr(5, days.length), 
+			            		weekDay = "",
+			            		temp = info[i].temp_low + "° ~ " + info[i].temp_high + "°";
+
+			            	if (i == 0) {
+			            		weekDay = "今天";
+			            	} else if (i == 1) {
+			            		weekDay = "明天";
+			            	} else {
+			            		weekDay = info[i].week.replace("星期", "周");
+			            	}
+
+			            	weekInfoObj.temp = temp;//温度区间
+			            	weekInfoObj.weatherAlt = weatherText;//天气情况
+			            	weekInfoObj.weatherSrc = "IMG/天气/" + weatherText + ".png";//天气URL
+			            	weekInfoObj.newDate = weekDay + " " + todayDate;//当天日期
+
+			            	//weekInfo.push(weekInfoObj);
+			            	weekInfo[i] = weekInfoObj;
+			            	weekInfoObj = {};
+			            }
+			            that.weekInfo = weekInfo;
+			            that.weekShow = true;
+			            if (that.todayShow && that.PMShow && that.weekShow) {
+			            	that.waitHide = true;
+			            }
+
+		            },function(){
+		            	console.log('获取一周内天气信息失败');
+		            });
+				},
+				getLifeInfo: function() {//获取一周内天气信息
+					var that = this;
+					this.$http.jsonp(this.lifeUrl,{jsonp:'jsoncallback'}).then(function(data){
+			        	var info = data.data.result,
+			        		infoList = Object.entries(info),
+			        		lifeInfoObj = {},
+							lifeInfo = [];
+			            for (let i = 0; i < infoList.length; i++) {
+
+			            	let itemName = infoList[i][0],
+			            		itemDes = infoList[i][1];
+			            	if (i === 0 && infoList[i][1].citynm == that.IP) {
+			            		that.makeUp: itemDes.lifeindex_kq_attr;
+			                	makeUpDes: itemDes.lifeindex_kq_dese;
+			                	cold: itemDes.lifeindex_gm_attr;
+			                	coldDes: itemDes.lifeindex_gm_dese;
+			                	cleanCar: itemDes.lifeindex_xc_attr;
+			                	cleanCarDes: itemDes.lifeindex_xc_dese;
+			                	dress: itemDes.lifeindex_ct_attr;
+			                	dressDes: itemDes.lifeindex_ct_dese;
+			                	UV: itemDes.lifeindex_uv_attr;
+			                	UVDes: itemDes.lifeindex_uv_dese;
+			                	exercise: itemDes.lifeindex_yd_attr;
+			                	exerciseDes: itemDes.lifeindex_yd_dese;
+			            	}
+
+
+
+
+
+
+
 			            	var weatherText = info[i].weather.indexOf("转") == -1 ? info[i].weather : info[i].weather.split("转")[0],
 			            		days = info[i].days.replace(/-0/g, "-"),
 			            		todayDate = days.substr(5, days.length), 
