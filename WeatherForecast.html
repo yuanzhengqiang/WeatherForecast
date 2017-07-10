@@ -356,23 +356,44 @@ header{
             mounted: function() {
 				//this.IP = ip.substr(1,ip.length);
 				//this.IP = remote_ip_info['city'];
-				alert(this.IP);
-				this.todayUrl = "http://api.k780.com:88/?app=weather.today&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json";
-				this.weekUrl = "http://api.k780.com:88/?app=weather.future&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json";
-				this.PM25Url = "http://api.k780.com:88/?app=weather.pm25&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json";
-				this.lifeUrl = "http://api.k780.com:88/?app=weather.lifeindex&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json";
+				this.todayUrl = "http://api.k780.com/?app=weather.today&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json";
+				this.weekUrl = "http://api.k780.com/?app=weather.future&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json";
+				this.PM25Url = "http://api.k780.com/?app=weather.pm25&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json";
+				this.lifeUrl = "http://api.k780.com/?app=weather.lifeindex&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json";
 				this.getTodayInfo();
 				this.getPM25Info();
 				this.getWeekInfo();
 			},
 			methods: {
 			    getTodayInfo: function() {//获取当前温度信息
-			    	alert(1);
 			    	var that = this,
 			    		todayInfo = {};
-					this.$http.jsonp(this.todayUrl,{jsonp:'jsoncallback'}).then(function(data){
+					/*this.$http.jsonp(this.todayUrl,{jsonp:'jsoncallback'}).then(function(data){
 			        	var info = data.data.result;
-			        	alert(info.citynm);
+			            todayInfo.city = info.citynm + "市";//当前城市
+			            todayInfo.cityTemp = info.citynm + "市 " + info.temperature_curr;//当前城市温度
+			            todayInfo.humidity = info.humidity;//空气湿度
+			            todayInfo.currentTemp = parseInt(info.temperature_curr);//当前温度
+			            todayInfo.currentWeather = info.weather_curr;//当前天气
+			            todayInfo.wind = info.wind;//风向
+			            todayInfo.winp = info.winp;//风速等级
+			            todayInfo.feelTemp = this.getFeelTemp(info.temperature_curr, info.humidity) + "℃";//体感温度
+
+			            that.todayInfo = todayInfo;
+			            if (parseInt(info.temperature_curr) < 0) {
+			            	that.todayTemp = true;
+			            }
+			            that.todayShow = true;
+			            if (that.todayShow && that.PMShow && that.weekShow) {
+			            	that.waitHide = true;
+			            }
+
+		            },function(){
+		            	console.log('获取当前温度信息失败');
+		            });*/
+					this.$http.get(this.todayUrl).then(function(data){
+						alert(successfully)
+			        	var info = data.data.result;
 			            todayInfo.city = info.citynm + "市";//当前城市
 			            todayInfo.cityTemp = info.citynm + "市 " + info.temperature_curr;//当前城市温度
 			            todayInfo.humidity = info.humidity;//空气湿度
@@ -396,12 +417,10 @@ header{
 		            });
 				},
 				getPM25Info: function() {//获取PM2.5信息
-					alert(2);
 					var that = this,
 						pm25Info = {};
 					this.$http.jsonp(this.PM25Url,{jsonp:'jsoncallback'}).then(function(data){
 			        	var info = data.data.result;
-			        	alert(info.aqi_remark);
 			            pm25Info.PMInfo = info.aqi + " " + info.aqi_levnm;//空气质量信息
 			            pm25Info.PMLevel = info.aqi_levid;//空气质量等级
 			            pm25Info.advice = info.aqi_remark;//空气质量建议
@@ -417,13 +436,11 @@ header{
 		            });
 				},
 				getWeekInfo: function() {//获取一周内天气信息
-					alert(3);
 					var that = this;
 					this.$http.jsonp(this.weekUrl,{jsonp:'jsoncallback'}).then(function(data){
 			        	var info = data.data.result,
 			        		weekInfoObj = {},
 							weekInfo = [];
-							alert(info.length);
 			            for (var i = 0; i < info.length; i++) {
 			            	var weatherText = info[i].weather.indexOf("转") == -1 ? info[i].weather : info[i].weather.split("转")[0],
 			            		days = info[i].days.replace(/-0/g, "-"),
