@@ -239,6 +239,8 @@ header{
 	transform: translateX(-50%) translateY(-50%);
 }
 </style>
+<!--<script type="text/javascript" src="http://www.coding123.net/getip.ashx?js=1"></script>-->
+<script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
 </head>
 <body>
 <div id="app" class="hide">
@@ -309,8 +311,7 @@ header{
 	</div>
 </div>
 </body>
-	<!--<script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
-    <script type="text/javascript" src="http://www.coding123.net/getip.ashx?js=1"></script>-->
+    
     <script type="text/javascript" src="JS/autoAdaptation.js"></script>
     <script src="JS/vue.js"></script>
     <script type="text/javascript" src="JS/vue-resource.js"></script>
@@ -318,26 +319,47 @@ header{
         var vm = new Vue({
             el: "#app",
             data: {
-                IP: "苏州",
+                IP: "",
                 todayUrl: "",
                	weekUrl: "",
                 PM25Url: "",
                 lifeUrl: "",
-                todayInfo: {},
-                PM25Info: {},
-                weekInfo: [],
+                todayInfo: {
+                	city: "",
+                	cityTemp: "",
+                	humidity: "",
+                	currentTemp: "",
+                	currentWeather: "",
+                	wind: "",
+                	winp: "",
+                	feelTemp: ""
+                },
+                PM25Info: {
+                	PMInfo: "",
+                	PMLevel: "",
+                	advice: ""
+                },
+                weekInfo: [
+                	{
+                		temp: "",
+	                	weatherAlt: "",
+	                	weatherSrc: "",
+	                	newDate: ""
+                	}
+                ],
                 todayTemp: false,
                 waitHide: false,
                 todayShow: false,
                 PMShow: false,
                 weekShow: false
             },
-            created: function() {
-				alert(this.IP);
-				this.todayUrl = `http://api.k780.com/?app=weather.today&weaid=${this.IP}&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json`;
-				this.weekUrl = `http://api.k780.com/?app=weather.future&weaid=${this.IP}&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json`;
-				this.PM25Url = `http://api.k780.com/?app=weather.pm25&weaid=${this.IP}&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json`;
-				this.lifeUrl = `http://api.k780.com/?app=weather.lifeindex&weaid=${this.IP}&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json`;
+            mounted: function() {
+				//this.IP = ip.substr(1,ip.length);
+				this.IP = remote_ip_info['city'];
+				this.todayUrl = "http://api.k780.com/?app=weather.today&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json";
+				this.weekUrl = "http://api.k780.com/?app=weather.future&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json";
+				this.PM25Url = "http://api.k780.com/?app=weather.pm25&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json";
+				this.lifeUrl = "http://api.k780.com/?app=weather.lifeindex&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json";
 				this.getTodayInfo();
 				this.getPM25Info();
 				this.getWeekInfo();
@@ -347,10 +369,10 @@ header{
 			    	var that = this,
 			    		todayInfo = {};
 					this.$http.jsonp(this.todayUrl,{jsonp:'jsoncallback'}).then(function(data){
-			        	let info = data.data.result;
+			        	var info = data.data.result;
 
-			            todayInfo.city = `${info.citynm}市`;//当前城市
-			            todayInfo.cityTemp = `${info.citynm}市 ${info.temperature_curr}`;//当前城市温度
+			            todayInfo.city = info.citynm + "市";//当前城市
+			            todayInfo.cityTemp = info.citynm + "市 " + info.temperature_curr;//当前城市温度
 			            todayInfo.humidity = info.humidity;//空气湿度
 			            todayInfo.currentTemp = parseInt(info.temperature_curr);//当前温度
 			            todayInfo.currentWeather = info.weather_curr;//当前天气
@@ -375,9 +397,9 @@ header{
 					var that = this,
 						pm25Info = {};
 					this.$http.jsonp(this.PM25Url,{jsonp:'jsoncallback'}).then(function(data){
-			        	let info = data.data.result;
+			        	var info = data.data.result;
 
-			            pm25Info.PMInfo = `${info.aqi} ${info.aqi_levnm}`;//空气质量信息
+			            pm25Info.PMInfo = info.aqi + " " + info.aqi_levnm;//空气质量信息
 			            pm25Info.PMLevel = info.aqi_levid;//空气质量等级
 			            pm25Info.advice = info.aqi_remark;//空气质量建议
 
@@ -394,16 +416,16 @@ header{
 				getWeekInfo: function() {//获取一周内天气信息
 					var that = this;
 					this.$http.jsonp(this.weekUrl,{jsonp:'jsoncallback'}).then(function(data){
-			        	let info = data.data.result,
+			        	var info = data.data.result,
 			        		weekInfoObj = {},
 							weekInfo = [];
 
-			            for (let i = 0; i < info.length; i++) {
-			            	let weatherText = info[i].weather.indexOf("转") == -1 ? info[i].weather : info[i].weather.split("转")[0],
+			            for (var i = 0; i < info.length; i++) {
+			            	var weatherText = info[i].weather.indexOf("转") == -1 ? info[i].weather : info[i].weather.split("转")[0],
 			            		days = info[i].days.replace(/-0/g, "-"),
 			            		todayDate = days.substr(5, days.length), 
 			            		weekDay = "",
-			            		temp = `${info[i].temp_low}° ~ ${info[i].temp_high}°`;
+			            		temp = info[i].temp_low + "° ~ " + info[i].temp_high + "°";
 
 			            	if (i == 0) {
 			            		weekDay = "今天";
@@ -415,8 +437,8 @@ header{
 
 			            	weekInfoObj.temp = temp;//温度区间
 			            	weekInfoObj.weatherAlt = weatherText;//天气情况
-			            	weekInfoObj.weatherSrc = `IMG/天气/${weatherText}.png`;//天气URL
-			            	weekInfoObj.newDate = `${weekDay} ${todayDate}`;//当天日期
+			            	weekInfoObj.weatherSrc = "IMG/天气/" + weatherText + ".png";//天气URL
+			            	weekInfoObj.newDate = weekDay + " " + todayDate;//当天日期
 
 			            	//weekInfo.push(weekInfoObj);
 			            	weekInfo[i] = weekInfoObj;
@@ -454,35 +476,6 @@ header{
 				}
 			}
         })
-/*function findWeather() {
-  var cityUrl = '';
-
-  $.getScript(cityUrl, function(script, textStatus, jqXHR) {
-    var citytq = remote_ip_info.city ;// 获取城市
-    alert(citytq)
-    return;
-    var url = "http://php.weather.sina.com.cn/iframe/index/w_cl.php?code=js&city=" + citytq + "&day=0&dfc=3";
-    $.ajax({
-      url : url,
-      dataType : "script",
-      scriptCharset : "gbk",
-      success : function(data) {
-        var _w = window.SWther.w[citytq][0];
-        var _f= _w.f1+"_0.png";
-        if(new Date().getHours() > 17){
-           _f= _w.f2+"_1.png";        
-        }
-        var img = "<img width='16px' height='16px' src='http://i2.sinaimg.cn/dy/main/weather/weatherplugin/wthIco/20_20/" +_f
-        + "' />";
-        var tq = citytq + " " + img + " " + _w.s1 + " " + _w.t1 + "℃～" + _w.t2 + "℃ " + _w.d1 + _w.p1 + "级";
-          
-        $('#weather').html(tq);
-      }
-    });
-  });
-}
-  
-findWeather();*/
     </script>
 
 </html>
