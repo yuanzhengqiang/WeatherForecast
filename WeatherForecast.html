@@ -239,8 +239,8 @@ header{
 	transform: translateX(-50%) translateY(-50%);
 }
 </style>
-<!--<script type="text/javascript" src="http://www.coding123.net/getip.ashx?js=1"></script>-->
-<script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
+<script type="text/javascript" src="http://www.coding123.net/getip.ashx?js=1"></script>
+<!--<script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>-->
 </head>
 <body>
 <div id="app" class="hide">
@@ -354,8 +354,8 @@ header{
                 weekShow: false
             },
             mounted: function() {
-				//this.IP = ip.substr(1,ip.length);
-				this.IP = remote_ip_info['city'];
+				this.IP = ip.substr(1,ip.length);
+				//this.IP = remote_ip_info['city'];
 				alert(this.IP);
 				this.todayUrl = "http://api.k780.com/?app=weather.today&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json";
 				this.weekUrl = "http://api.k780.com/?app=weather.future&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json";
