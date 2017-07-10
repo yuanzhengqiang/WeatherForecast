@@ -368,7 +368,7 @@ header{
 			    getTodayInfo: function() {//获取当前温度信息
 			    	var that = this,
 			    		todayInfo = {};
-					/*this.$http.jsonp(this.todayUrl,{jsonp:'jsoncallback'}).then(function(data){
+					this.$http.jsonp(this.todayUrl,{jsonp:'jsoncallback'}).then(function(data){
 			        	var info = data.data.result;
 			            todayInfo.city = info.citynm + "市";//当前城市
 			            todayInfo.cityTemp = info.citynm + "市 " + info.temperature_curr;//当前城市温度
@@ -389,31 +389,7 @@ header{
 			            }
 
 		            },function(){
-		            	console.log('获取当前温度信息失败');
-		            });*/
-					this.$http.get(this.todayUrl).then(function(data){
-						alert(successfully)
-			        	var info = data.data.result;
-			            todayInfo.city = info.citynm + "市";//当前城市
-			            todayInfo.cityTemp = info.citynm + "市 " + info.temperature_curr;//当前城市温度
-			            todayInfo.humidity = info.humidity;//空气湿度
-			            todayInfo.currentTemp = parseInt(info.temperature_curr);//当前温度
-			            todayInfo.currentWeather = info.weather_curr;//当前天气
-			            todayInfo.wind = info.wind;//风向
-			            todayInfo.winp = info.winp;//风速等级
-			            todayInfo.feelTemp = this.getFeelTemp(info.temperature_curr, info.humidity) + "℃";//体感温度
-
-			            that.todayInfo = todayInfo;
-			            if (parseInt(info.temperature_curr) < 0) {
-			            	that.todayTemp = true;
-			            }
-			            that.todayShow = true;
-			            if (that.todayShow && that.PMShow && that.weekShow) {
-			            	that.waitHide = true;
-			            }
-
-		            },function(){
-		            	console.log('获取当前温度信息失败');
+		            	alert('获取当前温度信息失败');
 		            });
 				},
 				getPM25Info: function() {//获取PM2.5信息
