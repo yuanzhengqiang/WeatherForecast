@@ -392,7 +392,7 @@ header{
 </div>
 </body>
     <script type="text/javascript">
-		let city = remote_ip_info['ip'];
+		var city = remote_ip_info['ip'];
 		document.getElementById("app").setAttribute("title", city);
 		(function (doc, win) {
 		    // 分辨率Resolution适配
@@ -533,7 +533,7 @@ header{
 			        	var info = data.data.result,
 			        		weekInfoObj = {},
 							weekInfo = [];
-			            for (let i = 0; i < info.length; i++) {
+			            for (var i = 0; i < info.length; i++) {
 			            	var weatherText = info[i].weather.indexOf("转") == -1 ? info[i].weather : info[i].weather.split("转")[0],
 			            		days = info[i].days.replace(/-0/g, "-"),
 			            		todayDate = days.substr(5, days.length), 
@@ -585,8 +585,8 @@ header{
 			        		infoList = Object.entries(info),
 			        		lifeInfoObj = {},
 							lifeInfo = [];
-			            for (let i = 0; i < infoList.length; i++) {
-			            	let itemName = infoList[i][0].replace(/-0/g, "-"),
+			            for (var i = 0; i < infoList.length; i++) {
+			            	var itemName = infoList[i][0].replace(/-0/g, "-"),
 			            		itemDes = infoList[i][1];
 			            	if (i === 0) {
 			            		that.setLifeInfo(itemDes);
