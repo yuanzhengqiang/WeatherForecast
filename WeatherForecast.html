@@ -552,6 +552,10 @@ header{
 						newDateInfo = this.getCookie(newDate);
 					if (newDateInfo != "") {
 						this.setLifeInfo(newDateInfo);
+						that.lifeShow = true;
+			            if (that.todayShow && that.PMShow && that.weekShow && that.lifeShow) {
+			            	that.waitHide = true;
+			            }
 						return;
 					}
 					var that = this;
