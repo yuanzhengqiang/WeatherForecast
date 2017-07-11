@@ -275,9 +275,10 @@ header{
 </style>
 <!--<script type="text/javascript" src="http://www.coding123.net/getip.ashx?js=1"></script>-->
 <script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
+
 </head>
 <body>
-<div id="app" class="hide">
+<div id="app" class="hide" title="">
 	<div class="wait" v-bind:class="{waitHide: waitHide}">
 		<img src="IMG/其他/wait.jpg" alt="请稍后..." class="waitImg">
 	</div>
@@ -390,9 +391,28 @@ header{
 	</div>
 </div>
 </body>
-    
-    <script type="text/javascript" src="JS/autoAdaptation.js"></script>
-    <script src="JS/vue.js"></script>
+    <script type="text/javascript">
+		let city = remote_ip_info['city'];
+		document.getElementById("app").setAttribute("title", city);
+		(function (doc, win) {
+		    // 分辨率Resolution适配
+		    var docEl = doc.documentElement,
+		        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+		        recalc = function () {
+		            var clientWidth = docEl.clientWidth;
+		            if (!clientWidth) return;
+		            docEl.style.fontSize = 100 * (clientWidth / 320) + 'px';
+		        };
+		    // Abort if browser does not support addEventListener
+		    if (!doc.addEventListener) return;
+		    win.addEventListener(resizeEvt, recalc, false);
+		    doc.addEventListener('DOMContentLoaded', recalc, false);
+		    // 一物理像素在不同屏幕的显示效果不一样。要根据devicePixelRatio来修改meta标签的scale,要注释上面的meta标签
+		    document.getElementById('app').removeAttribute("class");
+		})(document, window);
+	</script>
+    <!--<script type="text/javascript" src="JS/autoAdaptation.js"></script>-->
+    <script type="text/javascript" src="JS/vue.js"></script>
     <script type="text/javascript" src="JS/vue-resource.js"></script>
     <script>
         var vm = new Vue({
@@ -449,7 +469,9 @@ header{
             },
             mounted: function() {
 				//this.IP = ip.substr(1,ip.length);
-				this.IP = remote_ip_info['city'];
+				//this.IP = remote_ip_info['city'];
+				var city = document.getElementById("app").getAttribute("title");
+				this.IP = city;
 				this.todayUrl = "http://api.k780.com/?app=weather.today&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json&jsoncallback=data";
 				this.weekUrl = "http://api.k780.com/?app=weather.future&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json&jsoncallback=data";
 				this.PM25Url = "http://api.k780.com/?app=weather.pm25&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json&jsoncallback=data";
@@ -550,7 +572,6 @@ header{
 					var date = new Date(),
 						newDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate(),
 						newDateInfo = this.getCookie(newDate);
-						alert(newDateInfo);
 					if (newDateInfo != "") {
 						this.setLifeInfo(newDateInfo);
 						that.lifeShow = true;
@@ -561,7 +582,6 @@ header{
 					}
 					var that = this;
 					this.$http.jsonp(this.lifeUrl,{jsonp:'jsoncallback'}).then(function(data){
-						alert("getLifeInfo: success")
 			        	var info = data.data.result,
 			        		infoList = Object.entries(info),
 			        		lifeInfoObj = {},
