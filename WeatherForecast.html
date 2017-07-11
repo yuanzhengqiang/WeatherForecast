@@ -560,6 +560,7 @@ header{
 					}
 					var that = this;
 					this.$http.jsonp(this.lifeUrl,{jsonp:'jsoncallback'}).then(function(data){
+						alert("getLifeInfo: success")
 			        	var info = data.data.result,
 			        		infoList = Object.entries(info),
 			        		lifeInfoObj = {},
