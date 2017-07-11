@@ -346,21 +346,21 @@ header{
 						<img src="IMG/生活/污染.png" class="lifeInfoTopImg" alt="污染">
 					</div>
 					<div class="lifeInfoCenter">污染指数</div>
-					<div class="lifeInfoBottom">良</div>
+					<div class="lifeInfoBottom">{{lifeInfo.airPollution}}</div>
 				</div>
 				<div class="lifeInfoBoxDes">
 					<div>
 						<img src="IMG/生活/感冒.png" class="lifeInfoTopImg" alt="感冒">
 					</div>
 					<div class="lifeInfoCenter">感冒指数</div>
-					<div class="lifeInfoBottom">易发</div>
+					<div class="lifeInfoBottom">{{lifeInfo.cold}}</div>
 				</div>
 				<div class="lifeInfoBoxDes">
 					<div>
 						<img src="IMG/生活/洗车.png" class="lifeInfoTopImg" alt="洗车">
 					</div>
 					<div class="lifeInfoCenter">洗车指数</div>
-					<div class="lifeInfoBottom">较不宜</div>
+					<div class="lifeInfoBottom">{{lifeInfo.cleanCar}}</div>
 				</div>
 			</div>
 			<div class="lifeInfoBox">
@@ -369,21 +369,21 @@ header{
 						<img src="IMG/生活/穿衣.png" class="lifeInfoTopImg" alt="穿衣">
 					</div>
 					<div class="lifeInfoCenter">穿衣指数</div>
-					<div class="lifeInfoBottom">炎热</div>
+					<div class="lifeInfoBottom">{{lifeInfo.dress}}</div>
 				</div>
 				<div class="lifeInfoBoxDes">
 					<div>
 						<img src="IMG/生活/紫外线.png" class="lifeInfoTopImg" alt="紫外线">
 					</div>
 					<div class="lifeInfoCenter">紫外线指数</div>
-					<div class="lifeInfoBottom">中等</div>
+					<div class="lifeInfoBottom">{{lifeInfo.UV}}</div>
 				</div>
 				<div class="lifeInfoBoxDes">
 					<div>
 						<img src="IMG/生活/运动.png" class="lifeInfoTopImg" alt="运动">
 					</div>
 					<div class="lifeInfoCenter">运动指数</div>
-					<div class="lifeInfoBottom">较不宜</div>
+					<div class="lifeInfoBottom">{{lifeInfo.exercise}}</div>
 				</div>
 			</div>
 		</div>
@@ -427,8 +427,8 @@ header{
                 	}
                 ],
                 lifeInfo:{
-                	makeUp: "",
-                	makeUpDes: "",
+                	airPollution: "",
+                	airPollutionDes: "",
                 	cold: "",
                 	coldDes: "",
                 	cleanCar: "",
@@ -444,15 +444,16 @@ header{
                 waitHide: false,
                 todayShow: false,
                 PMShow: false,
-                weekShow: false
+                weekShow: false,
+                lifeShow: false
             },
             mounted: function() {
 				//this.IP = ip.substr(1,ip.length);
 				this.IP = remote_ip_info['city'];
-				this.todayUrl = "http://api.k780.com/?app=weather.today&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json&jsoncallback=data";
-				this.weekUrl = "http://api.k780.com/?app=weather.future&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json&jsoncallback=data";
-				this.PM25Url = "http://api.k780.com/?app=weather.pm25&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json&jsoncallback=data";
-				this.lifeUrl = "http://api.k780.com/?app=weather.lifeindex&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json&jsoncallback=data";
+				this.todayUrl = "https://api.k780.com/?app=weather.today&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json&jsoncallback=data";
+				this.weekUrl = "https://api.k780.com/?app=weather.future&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json&jsoncallback=data";
+				this.PM25Url = "https://api.k780.com/?app=weather.pm25&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json&jsoncallback=data";
+				this.lifeUrl = "https://api.k780.com/?app=weather.lifeindex&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json&jsoncallback=data";
 				this.getTodayInfo();
 				this.getPM25Info();
 				this.getWeekInfo();
@@ -478,7 +479,7 @@ header{
 			            	that.todayTemp = true;
 			            }
 			            that.todayShow = true;
-			            if (that.todayShow && that.PMShow && that.weekShow) {
+			            if (that.todayShow && that.PMShow && that.weekShow && that.lifeShow) {
 			            	that.waitHide = true;
 			            }
 
@@ -497,7 +498,7 @@ header{
 
 			            that.PM25Info = pm25Info;
 			            that.PMShow = true;
-			            if (that.todayShow && that.PMShow && that.weekShow) {
+			            if (that.todayShow && that.PMShow && that.weekShow && that.lifeShow) {
 			            	that.waitHide = true;
 			            }
 
@@ -537,7 +538,7 @@ header{
 			            }
 			            that.weekInfo = weekInfo;
 			            that.weekShow = true;
-			            if (that.todayShow && that.PMShow && that.weekShow) {
+			            if (that.todayShow && that.PMShow && that.weekShow && that.lifeShow) {
 			            	that.waitHide = true;
 			            }
 
@@ -545,7 +546,14 @@ header{
 		            	console.log('获取一周内天气信息失败');
 		            });
 				},
-				getLifeInfo: function() {//获取一周内天气信息
+				getLifeInfo: function() {//获取一周内生活信息
+					var date = new Date(),
+						newDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate(),
+						newDateInfo = this.getCookie(newDate);
+					if (newDateInfo != "") {
+						this.setLifeInfo(newDateInfo);
+						return;
+					}
 					var that = this;
 					this.$http.jsonp(this.lifeUrl,{jsonp:'jsoncallback'}).then(function(data){
 			        	var info = data.data.result,
@@ -553,56 +561,16 @@ header{
 			        		lifeInfoObj = {},
 							lifeInfo = [];
 			            for (let i = 0; i < infoList.length; i++) {
-
-			            	let itemName = infoList[i][0],
+			            	let itemName = infoList[i][0].replace(/-0/g, "-"),
 			            		itemDes = infoList[i][1];
 			            	if (i === 0 && infoList[i][1].citynm == that.IP) {
-			            		that.makeUp: itemDes.lifeindex_kq_attr;
-			                	makeUpDes: itemDes.lifeindex_kq_dese;
-			                	cold: itemDes.lifeindex_gm_attr;
-			                	coldDes: itemDes.lifeindex_gm_dese;
-			                	cleanCar: itemDes.lifeindex_xc_attr;
-			                	cleanCarDes: itemDes.lifeindex_xc_dese;
-			                	dress: itemDes.lifeindex_ct_attr;
-			                	dressDes: itemDes.lifeindex_ct_dese;
-			                	UV: itemDes.lifeindex_uv_attr;
-			                	UVDes: itemDes.lifeindex_uv_dese;
-			                	exercise: itemDes.lifeindex_yd_attr;
-			                	exerciseDes: itemDes.lifeindex_yd_dese;
-			            	}
-
-
-
-
-
-
-
-			            	var weatherText = info[i].weather.indexOf("转") == -1 ? info[i].weather : info[i].weather.split("转")[0],
-			            		days = info[i].days.replace(/-0/g, "-"),
-			            		todayDate = days.substr(5, days.length), 
-			            		weekDay = "",
-			            		temp = info[i].temp_low + "° ~ " + info[i].temp_high + "°";
-
-			            	if (i == 0) {
-			            		weekDay = "今天";
-			            	} else if (i == 1) {
-			            		weekDay = "明天";
+			            		that.setLifeInfo(itemDes);
 			            	} else {
-			            		weekDay = info[i].week.replace("星期", "周");
+			            		that.setCookie(itemName,itemDes,i);
 			            	}
-
-			            	weekInfoObj.temp = temp;//温度区间
-			            	weekInfoObj.weatherAlt = weatherText;//天气情况
-			            	weekInfoObj.weatherSrc = "IMG/天气/" + weatherText + ".png";//天气URL
-			            	weekInfoObj.newDate = weekDay + " " + todayDate;//当天日期
-
-			            	//weekInfo.push(weekInfoObj);
-			            	weekInfo[i] = weekInfoObj;
-			            	weekInfoObj = {};
 			            }
-			            that.weekInfo = weekInfo;
-			            that.weekShow = true;
-			            if (that.todayShow && that.PMShow && that.weekShow) {
+			            that.lifeShow = true;
+			            if (that.todayShow && that.PMShow && that.weekShow && that.lifeShow) {
 			            	that.waitHide = true;
 			            }
 
@@ -629,6 +597,40 @@ header{
 				    }  
 				        
 				    return Math.round((HI - 32) / 1.8, 2);
+				},
+				setLifeInfo: function(itemDes) {
+					this.lifeInfo.airPollution = itemDes.lifeindex_kq_attr;
+                	this.lifeInfo.airPollutionDes = itemDes.lifeindex_kq_dese;
+                	this.lifeInfo.cold = itemDes.lifeindex_gm_attr;
+                	this.lifeInfo.coldDes = itemDes.lifeindex_gm_dese;
+                	this.lifeInfo.cleanCar = itemDes.lifeindex_xc_attr;
+                	this.lifeInfo.cleanCarDes = itemDes.lifeindex_xc_dese;
+                	this.lifeInfo.dress = itemDes.lifeindex_ct_attr;
+                	this.lifeInfo.dressDes = itemDes.lifeindex_ct_dese;
+                	this.lifeInfo.UV = itemDes.lifeindex_uv_attr;
+                	this.lifeInfo.UVDes = itemDes.lifeindex_uv_dese;
+                	this.lifeInfo.exercise = itemDes.lifeindex_yd_attr;
+                	this.lifeInfo.exerciseDes = itemDes.lifeindex_yd_dese;
+				},
+				setCookie: function(name,value,times) {
+					var exdate=new Date();
+					exdate.setDate(exdate.getDate()+times)
+					document.cookie= name + "=" +escape(value)+
+					((times==null) ? "" : ";expires="+exdate.toGMTString())
+				},
+				getCookie: function(name) {
+					if (document.cookie.length>0) {
+						var start=document.cookie.indexOf(name + "=")
+						if (start!=-1) { 
+							start=start + name.length+1 
+							var end=document.cookie.indexOf(";",start)
+							if (end==-1) {
+								end=document.cookie.length;
+							}
+							return unescape(document.cookie.substring(start,end))
+						} 
+					}
+					return "";
 				}
 			}
         })
