@@ -472,10 +472,10 @@ header{
 				//this.IP = remote_ip_info['city'];
 				var city = document.getElementById("app").getAttribute("title");
 				this.IP = city;
-				this.todayUrl = "https://sapi.k780.com/?app=weather.today&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json&jsoncallback=data";
-				this.weekUrl = "https://sapi.k780.com/?app=weather.future&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json&jsoncallback=data";
-				this.PM25Url = "https://sapi.k780.com/?app=weather.pm25&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json&jsoncallback=data";
-				this.lifeUrl = "https://sapi.k780.com/?app=weather.lifeindex&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json&jsoncallback=data";
+				this.todayUrl = "https://sapi.k780.com/?app=weather.today&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json";
+				this.weekUrl = "https://sapi.k780.com/?app=weather.future&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json";
+				this.PM25Url = "https://sapi.k780.com/?app=weather.pm25&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json";
+				this.lifeUrl = "https://sapi.k780.com/?app=weather.lifeindex&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json";
 				this.getTodayInfo();
 				this.getPM25Info();
 				this.getWeekInfo();
