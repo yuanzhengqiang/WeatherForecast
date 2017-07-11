@@ -550,6 +550,7 @@ header{
 					var date = new Date(),
 						newDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate(),
 						newDateInfo = this.getCookie(newDate);
+						alert(newDateInfo);
 					if (newDateInfo != "") {
 						this.setLifeInfo(newDateInfo);
 						that.lifeShow = true;
