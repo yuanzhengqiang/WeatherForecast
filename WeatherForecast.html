@@ -274,7 +274,7 @@ header{
 }
 </style>
 <!--<script type="text/javascript" src="http://www.coding123.net/getip.ashx?js=1"></script>-->
-<script type="text/javascript" src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
+<script type="text/javascript" src="https://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
 
 </head>
 <body>
@@ -392,7 +392,7 @@ header{
 </div>
 </body>
     <script type="text/javascript">
-		let city = remote_ip_info['city'];
+		let city = remote_ip_info['ip'];
 		document.getElementById("app").setAttribute("title", city);
 		(function (doc, win) {
 		    // 分辨率Resolution适配
@@ -589,7 +589,7 @@ header{
 			            for (let i = 0; i < infoList.length; i++) {
 			            	let itemName = infoList[i][0].replace(/-0/g, "-"),
 			            		itemDes = infoList[i][1];
-			            	if (i === 0 && infoList[i][1].citynm == that.IP) {
+			            	if (i === 0) {
 			            		that.setLifeInfo(itemDes);
 			            	} else {
 			            		that.setCookie(itemName,itemDes,i);
