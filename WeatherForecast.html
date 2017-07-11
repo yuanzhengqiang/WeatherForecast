@@ -278,7 +278,7 @@ header{
 
 </head>
 <body>
-<div id="app" class="hide" title="">
+<div id="app" title="">
 	<div class="wait" v-bind:class="{waitHide: waitHide}">
 		<img src="IMG/其他/wait.jpg" alt="请稍后..." class="waitImg">
 	</div>
@@ -408,7 +408,6 @@ header{
 		    win.addEventListener(resizeEvt, recalc, false);
 		    doc.addEventListener('DOMContentLoaded', recalc, false);
 		    // 一物理像素在不同屏幕的显示效果不一样。要根据devicePixelRatio来修改meta标签的scale,要注释上面的meta标签
-		    document.getElementById('app').removeAttribute("class");
 		})(document, window);
 	</script>
     <!--<script type="text/javascript" src="JS/autoAdaptation.js"></script>-->
