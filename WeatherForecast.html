@@ -394,23 +394,8 @@ header{
     <script type="text/javascript">
 		var city = remote_ip_info['ip'];
 		document.getElementById("app").setAttribute("title", city);
-		(function (doc, win) {
-		    // 分辨率Resolution适配
-		    var docEl = doc.documentElement,
-		        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-		        recalc = function () {
-		            var clientWidth = docEl.clientWidth;
-		            if (!clientWidth) return;
-		            docEl.style.fontSize = 100 * (clientWidth / 320) + 'px';
-		        };
-		    // Abort if browser does not support addEventListener
-		    if (!doc.addEventListener) return;
-		    win.addEventListener(resizeEvt, recalc, false);
-		    doc.addEventListener('DOMContentLoaded', recalc, false);
-		    // 一物理像素在不同屏幕的显示效果不一样。要根据devicePixelRatio来修改meta标签的scale,要注释上面的meta标签
-		})(document, window);
 	</script>
-    <!--<script type="text/javascript" src="JS/autoAdaptation.js"></script>-->
+    <script type="text/javascript" src="JS/autoAdaptation.js"></script>
     <script type="text/javascript" src="JS/vue.js"></script>
     <script type="text/javascript" src="JS/vue-resource.js"></script>
     <script>
@@ -582,7 +567,7 @@ header{
 					var that = this;
 					this.$http.jsonp(this.lifeUrl,{jsonp:'jsoncallback'}).then(function(data){
 			        	var info = data.data.result,
-			        		infoList = Object.entries(info),
+			        		infoList = that.entries(info),
 			        		lifeInfoObj = {},
 							lifeInfo = [];
 			            for (var i = 0; i < infoList.length; i++) {
@@ -656,7 +641,14 @@ header{
 						} 
 					}
 					return "";
-				}
+				},
+				entries: function(obj) {  
+				    var arr = [];  
+				    for (var key of Object.keys(obj)) {  
+				        arr.push([key, obj[key]]);  
+				    }  
+				    return arr;  
+				}  
 			}
         })
     </script>
