@@ -537,7 +537,7 @@ header{
 							weekInfo = [];
 			            for (var i = 0; i < info.length; i++) {
 			            	//var weatherText = info[i].weather.indexOf("转") == -1 ? info[i].weather : info[i].weather.split("转")[0],
-			            	var weatherText = info[i].weather,
+			            	var weatherText = info[i].weather.replace("转", "-"),
 			            		days = info[i].days.replace(/-0/g, "-"),
 			            		todayDate = days.substr(5, days.length), 
 			            		weekDay = "",
