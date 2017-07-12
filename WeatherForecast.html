@@ -570,7 +570,7 @@ header{
 		            });
 				},
 				getLifeInfo: function() {//获取一周内生活信息
-					var date = new Date(),
+					/*var date = new Date(),
 						newDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate(),
 						newDateInfo = this.getCookie(newDate);
 					if (newDateInfo != "") {
@@ -580,7 +580,7 @@ header{
 			            	this.waitHide = true;
 			            }
 						return;
-					}
+					}*/
 					var that = this;
 					this.$http.jsonp(this.lifeUrl,{jsonp:'jsoncallback'}).then(function(data){
 			        	var info = data.data.result,
@@ -593,7 +593,7 @@ header{
 			            	if (i === 0) {
 			            		that.setLifeInfo(itemDes);
 			            	} else {
-			            		that.setCookie(itemName,itemDes,i);
+			            		//that.setCookie(itemName,itemDes,i);
 			            	}
 			            }
 			            that.lifeShow = true;
