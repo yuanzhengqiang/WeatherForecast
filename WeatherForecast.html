@@ -481,13 +481,13 @@ header{
 			var mainContent = document.getElementById('mainContent');
 		    mainContent.addEventListener('scroll', function(){
 		    	var todayInfo = document.getElementById('todayInfo');
-		    	var todayInfoTop = todayInfo.getBoundingClientRect().top; //透明度值变量
+		    	var todayInfoTop = todayInfo.getBoundingClientRect().top; 
 		    	var headerHight = document.getElementById('header').offsetHeight;
-		    	var alpha = 0 - (todayInfoTop - headerHight) ;
-		        if (alpha > -1 && alpha < 101) {
+		    	var alpha = 0 - (todayInfoTop - headerHight) ;//透明度值变量
+		        if (alpha > -1 && alpha < 150) {
 					var header = document.getElementById('header'); //获取DOM元素对象
 					console.log(alpha);
-					header.style.opacity = alpha / 100; //设置fierfox等透明度，注意透明度值是小数
+					header.style.opacity = alpha / 150; //设置fierfox等透明度，注意透明度值是小数
 		        }
 		    });
 		}
