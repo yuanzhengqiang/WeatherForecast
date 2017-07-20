@@ -18,6 +18,12 @@ body{
     height: 100vh;
     background-color: rgba(240, 237, 236, 0.2);
     overflow: hidden;
+    -webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 #app{
 	width: 100vw;
@@ -35,6 +41,7 @@ header{
 	display:-webkit-flex;
     line-height: 0.3rem;
     color: #0B2A60;
+    opacity: 0;
 }
 .headLfet{
 	flex:1;
@@ -44,6 +51,7 @@ header{
 .headCenter{
 	flex:3;
 	display: inline-block;
+	
 }
 .headRight{
 	flex:1;
@@ -81,9 +89,13 @@ header{
 .mainContent::-moz-scrollbar {display:none}
 .mainContent::-ms-scrollbar {display:none}
 .todayInfo{
-	padding: 0.4rem 0.5rem;
+	padding: 0rem 0.5rem 0.4rem;
     text-align: center;
     color: #0B2A60;
+}
+.todayInfoCity{
+	font-size: 0.12rem;
+    margin-bottom: 0.2rem;
 }
 .todayInfoWeatherType{
 	font-size: 0.16rem;
@@ -149,7 +161,7 @@ header{
 .todayInfoWeatherPMDes{
 	font-size: 0.12rem;
     position: relative;
-    top: -0.04rem;
+    top: -0.045rem;
     left: -0.05rem;
 }
 .weekInfo{
@@ -288,18 +300,55 @@ header{
 	font-size: 0.16rem;
     font-weight: 700;
 }
+.modalBox{
+	position: fixed;
+	top: 45%;
+	left: 50%;
+	webkit-transform: translateX(-50%) translateY(-50%);
+	-moz-transform: translateX(-50%) translateY(-50%);
+	-ms-transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);
+	width: 70vw;
+    height: auto;
+    background-color: white;
+    text-align: center;
+    display: none;
+    z-index: 100;
+    padding: 0.15rem 0.2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0px 0px 20px #000 inset;
+}
+.modalAdvice{
+	font-size: 0.15rem;
+    font-family: 楷体;
+    display: block;
+}
+.shade{
+	width: 100vw;
+	height:100vh;
+	z-index: 99;
+	position: absolute;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	opacity: 0.5;
+	background-color: #000;
+	display: none;
+}
 </style>
 <!--<script type="text/javascript" src="http://www.coding123.net/getip.ashx?js=1"></script>
 <script type="text/javascript" src="https://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>-->
 <script type="text/javascript" src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
 </head>
-<body>
+<body onload="load()">
 <div id="app" title="">
 	<div class="wait" v-bind:class="{waitHide: waitHide}">
 		<img src="IMG/其他/wait.jpg" alt="请稍后..." class="waitImg">
 	</div>
 <!--蓝色0B2A60-->
-	<header class="hide" v-bind:class="{showFlex: waitHide}">
+	<header class="hide" v-bind:class="{showFlex: waitHide}" id="header">
 		<div class="headLfet">
 			<span class="headLeftDes hide">{{todayInfo.cityTemp}}</span>
 		</div>
@@ -311,7 +360,8 @@ header{
 		</div>
 	</header>
 	<div class="mainContent hide" id="mainContent" v-bind:class="{show: waitHide}">
-		<div class="todayInfo">
+		<div class="todayInfo" id="todayInfo">
+			<div class="todayInfoCity">{{todayInfo.city}}</div>
 			<div class="todayInfoWeatherType">{{todayInfo.currentWeather}}</div>
 			<div class="todayInfoWeatherTemperature">
 				<span class="todayInfoWeatherTemperatureLeft" v-bind:class="{ todayTemp: todayTemp}">-</span>
@@ -320,7 +370,7 @@ header{
 			</div>
 			
 			<div class="todayInfoWeatherPM">
-				<button class="todayInfoWeatherPMDiv">
+				<button class="todayInfoWeatherPMDiv" v-on:click="showPMAdvice(PM25Info.advice)">
 					<span class="todayInfoWeatherPMImg"></span>
 					<span class="todayInfoWeatherPMDes">{{PM25Info.PMInfo}}</span>
 				</button>
@@ -334,7 +384,7 @@ header{
 			</div>
 		</div>
 		<div class="otherInfo">
-			<div class="otherInfoCenter">
+			<div class="otherInfoCenter" v-on:click="showPMAdvice(PM25Info.advice)">
 				<div class="otherInfoCenterTop">
 					<span class="otherInfoCenterTopImg imgLeft"></span>
 					<span class="otherInfoCenterTopName">{{todayInfo.wind}}</span>
@@ -358,21 +408,21 @@ header{
 		</div>
 		<div class="lifeInfo">
 			<div class="lifeInfoBox">
-				<div class="lifeInfoBoxDes">
+				<div class="lifeInfoBoxDes" v-on:click="showLifeAdvice(lifeInfo.airPollutionDes)">
 					<div>
 						<img src="IMG/生活/污染.svg" class="lifeInfoTopImg" alt="污染">
 					</div>
 					<div class="lifeInfoCenter">污染指数</div>
 					<div class="lifeInfoBottom">{{lifeInfo.airPollution}}</div>
 				</div>
-				<div class="lifeInfoBoxDes">
+				<div class="lifeInfoBoxDes" v-on:click="showLifeAdvice(lifeInfo.coldDes)">
 					<div>
 						<img src="IMG/生活/感冒.svg" class="lifeInfoTopImg" alt="感冒">
 					</div>
 					<div class="lifeInfoCenter">感冒指数</div>
 					<div class="lifeInfoBottom">{{lifeInfo.cold}}</div>
 				</div>
-				<div class="lifeInfoBoxDes">
+				<div class="lifeInfoBoxDes" v-on:click="showLifeAdvice(lifeInfo.cleanCarDes)">
 					<div>
 						<img src="IMG/生活/洗车.svg" class="lifeInfoTopImg" alt="洗车">
 					</div>
@@ -381,21 +431,21 @@ header{
 				</div>
 			</div>
 			<div class="lifeInfoBox">
-				<div class="lifeInfoBoxDes">
+				<div class="lifeInfoBoxDes" v-on:click="showLifeAdvice(lifeInfo.dressDes)">
 					<div>
 						<img src="IMG/生活/穿衣.svg" class="lifeInfoTopImg" alt="穿衣">
 					</div>
 					<div class="lifeInfoCenter">穿衣指数</div>
 					<div class="lifeInfoBottom">{{lifeInfo.dress}}</div>
 				</div>
-				<div class="lifeInfoBoxDes">
+				<div class="lifeInfoBoxDes" v-on:click="showLifeAdvice(lifeInfo.UVDes)">
 					<div>
 						<img src="IMG/生活/紫外线.svg" class="lifeInfoTopImg" alt="紫外线">
 					</div>
 					<div class="lifeInfoCenter">紫外线指数</div>
 					<div class="lifeInfoBottom">{{lifeInfo.UV}}</div>
 				</div>
-				<div class="lifeInfoBoxDes">
+				<div class="lifeInfoBoxDes" v-on:click="showLifeAdvice(lifeInfo.exerciseDes)">
 					<div>
 						<img src="IMG/生活/运动.svg" class="lifeInfoTopImg" alt="运动">
 					</div>
@@ -405,28 +455,43 @@ header{
 			</div>
 		</div>
 	</div>
+
+	<!-- PM2.5建议 -->
+	<div class="modalBox" id="PMAdviceBox">
+		<span id="PMAdvice" class="modalAdvice"></span>
+	</div>
+	<div class="modalBox" id="lifeAdviceBox">
+		<span id="lifeAdvice" class="modalAdvice"></span>
+	</div>
+
+	<!-- 半透明遮罩 -->
+	<div class="shade" id="shade" v-on:click.self="closeModel()"></div>
 </div>
 </body>
+    
+    <script type="text/javascript" src="JS/autoAdaptation.js"></script>
+    <script type="text/javascript" src="JS/vue.js"></script>
+    <script type="text/javascript" src="JS/vue-resource.js"></script>
     <script type="text/javascript">
 		//var city = remote_ip_info['ip'];
 		var city = returnCitySN.cip;
 		document.getElementById("app").setAttribute("title", city);
-		var mainContent = document.getElementById("mainContent");
-		mainContent.addEventListener('scroll', function(){
-
-        alert(2)
-
-    	});
 		
-		mainContent.onscroll=function(){
-			alert(1)
-			var t =document.documentElement.scrollTop||document.body.scrollTop;
-			console.log(t);
+    	function load() {
+			var mainContent = document.getElementById('mainContent');
+		    mainContent.addEventListener('scroll', function(){
+		    	var todayInfo = document.getElementById('todayInfo');
+		    	var todayInfoTop = todayInfo.getBoundingClientRect().top; //透明度值变量
+		    	var headerHight = document.getElementById('header').offsetHeight;
+		    	var alpha = 0 - (todayInfoTop - headerHight) ;
+		        if (alpha > -1 && alpha < 101) {
+					var header = document.getElementById('header'); //获取DOM元素对象
+					console.log(alpha);
+					header.style.opacity = alpha / 100; //设置fierfox等透明度，注意透明度值是小数
+		        }
+		    });
 		}
 	</script>
-    <script type="text/javascript" src="JS/autoAdaptation.js"></script>
-    <script type="text/javascript" src="JS/vue.js"></script>
-    <script type="text/javascript" src="JS/vue-resource.js"></script>
     <script>
         var vm = new Vue({
             el: "#app",
@@ -582,17 +647,6 @@ header{
 		            });
 				},
 				getLifeInfo: function() {//获取一周内生活信息
-					/*var date = new Date(),
-						newDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate(),
-						newDateInfo = this.getCookie(newDate);
-					if (newDateInfo != "") {
-						this.setLifeInfo(newDateInfo);
-						this.lifeShow = true;
-			            if (this.todayShow && this.PMShow && this.weekShow && this.lifeShow) {
-			            	this.waitHide = true;
-			            }
-						return;
-					}*/
 					var that = this;
 					this.$http.jsonp(this.lifeUrl,{jsonp:'jsoncallback'}).then(function(data){
 			        	var info = data.data.result,
@@ -677,7 +731,25 @@ header{
 				        arr.push([key, obj[key]]);  
 				    }  
 				    return arr;  
-				}  
+				},
+				showPMAdvice: function(advice) {
+					document.getElementById("shade").style.display = "block";
+					document.getElementById("PMAdviceBox").style.display = "block";
+					document.getElementById('PMAdvice').innerHTML = advice;
+				},
+				showLifeAdvice: function(advice) {
+					document.getElementById("shade").style.display = "block";
+					document.getElementById("lifeAdviceBox").style.display = "block";
+					document.getElementById('lifeAdvice').innerHTML = advice;
+				},
+				closeModel: function() { 
+				    //获取点击对象      
+				    document.getElementById("shade").style.display = "none";
+					var modalBoxList = document.querySelectorAll(".modalBox");
+					for (var i = 0; i < modalBoxList.length; i++) {
+						modalBoxList[i].style.display = "none";
+					}
+				}
 			}
         })
     </script>
