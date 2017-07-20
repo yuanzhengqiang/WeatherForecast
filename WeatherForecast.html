@@ -384,7 +384,7 @@ header{
 			</div>
 		</div>
 		<div class="otherInfo">
-			<div class="otherInfoCenter" v-on:click="showPMAdvice(PM25Info.advice)">
+			<div class="otherInfoCenter" v-on:click="showModalAdvice(PM25Info.advice)">
 				<div class="otherInfoCenterTop">
 					<span class="otherInfoCenterTopImg imgLeft"></span>
 					<span class="otherInfoCenterTopName">{{todayInfo.wind}}</span>
@@ -408,21 +408,21 @@ header{
 		</div>
 		<div class="lifeInfo">
 			<div class="lifeInfoBox">
-				<div class="lifeInfoBoxDes" v-on:click="showLifeAdvice(lifeInfo.airPollutionDes)">
+				<div class="lifeInfoBoxDes" v-on:click="showModalAdvice(lifeInfo.airPollutionDes)">
 					<div>
 						<img src="IMG/生活/污染.svg" class="lifeInfoTopImg" alt="污染">
 					</div>
 					<div class="lifeInfoCenter">污染指数</div>
 					<div class="lifeInfoBottom">{{lifeInfo.airPollution}}</div>
 				</div>
-				<div class="lifeInfoBoxDes" v-on:click="showLifeAdvice(lifeInfo.coldDes)">
+				<div class="lifeInfoBoxDes" v-on:click="showModalAdvice(lifeInfo.coldDes)">
 					<div>
 						<img src="IMG/生活/感冒.svg" class="lifeInfoTopImg" alt="感冒">
 					</div>
 					<div class="lifeInfoCenter">感冒指数</div>
 					<div class="lifeInfoBottom">{{lifeInfo.cold}}</div>
 				</div>
-				<div class="lifeInfoBoxDes" v-on:click="showLifeAdvice(lifeInfo.cleanCarDes)">
+				<div class="lifeInfoBoxDes" v-on:click="showModalAdvice(lifeInfo.cleanCarDes)">
 					<div>
 						<img src="IMG/生活/洗车.svg" class="lifeInfoTopImg" alt="洗车">
 					</div>
@@ -431,21 +431,21 @@ header{
 				</div>
 			</div>
 			<div class="lifeInfoBox">
-				<div class="lifeInfoBoxDes" v-on:click="showLifeAdvice(lifeInfo.dressDes)">
+				<div class="lifeInfoBoxDes" v-on:click="showModalAdvice(lifeInfo.dressDes)">
 					<div>
 						<img src="IMG/生活/穿衣.svg" class="lifeInfoTopImg" alt="穿衣">
 					</div>
 					<div class="lifeInfoCenter">穿衣指数</div>
 					<div class="lifeInfoBottom">{{lifeInfo.dress}}</div>
 				</div>
-				<div class="lifeInfoBoxDes" v-on:click="showLifeAdvice(lifeInfo.UVDes)">
+				<div class="lifeInfoBoxDes" v-on:click="showModalAdvice(lifeInfo.UVDes)">
 					<div>
 						<img src="IMG/生活/紫外线.svg" class="lifeInfoTopImg" alt="紫外线">
 					</div>
 					<div class="lifeInfoCenter">紫外线指数</div>
 					<div class="lifeInfoBottom">{{lifeInfo.UV}}</div>
 				</div>
-				<div class="lifeInfoBoxDes" v-on:click="showLifeAdvice(lifeInfo.exerciseDes)">
+				<div class="lifeInfoBoxDes" v-on:click="showModalAdvice(lifeInfo.exerciseDes)">
 					<div>
 						<img src="IMG/生活/运动.svg" class="lifeInfoTopImg" alt="运动">
 					</div>
@@ -457,11 +457,8 @@ header{
 	</div>
 
 	<!-- PM2.5建议 -->
-	<div class="modalBox" id="PMAdviceBox">
-		<span id="PMAdvice" class="modalAdvice"></span>
-	</div>
-	<div class="modalBox" id="lifeAdviceBox">
-		<span id="lifeAdvice" class="modalAdvice"></span>
+	<div class="modalBox" id="modalAdviceBox">
+		<span id="modalAdvice" class="modalAdvice"></span>
 	</div>
 
 	<!-- 半透明遮罩 -->
@@ -732,23 +729,14 @@ header{
 				    }  
 				    return arr;  
 				},
-				showPMAdvice: function(advice) {
+				showModalAdvice: function(advice) {
 					document.getElementById("shade").style.display = "block";
-					document.getElementById("PMAdviceBox").style.display = "block";
-					document.getElementById('PMAdvice').innerHTML = advice;
-				},
-				showLifeAdvice: function(advice) {
-					document.getElementById("shade").style.display = "block";
-					document.getElementById("lifeAdviceBox").style.display = "block";
-					document.getElementById('lifeAdvice').innerHTML = advice;
+					document.getElementById("modalAdviceBox").style.display = "block";
+					document.getElementById('modalAdvice').innerHTML = advice;
 				},
 				closeModel: function() { 
-				    //获取点击对象      
 				    document.getElementById("shade").style.display = "none";
-					var modalBoxList = document.querySelectorAll(".modalBox");
-					for (var i = 0; i < modalBoxList.length; i++) {
-						modalBoxList[i].style.display = "none";
-					}
+					document.getElementById("#modalAdviceBox").style.display = "none";
 				}
 			}
         })
