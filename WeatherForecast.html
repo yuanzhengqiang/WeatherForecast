@@ -310,7 +310,7 @@ header{
 			<img src="IMG/blueSet.png" alt="设置" class="headRightDes">
 		</div>
 	</header>
-	<div class="mainContent hide" v-bind:class="{show: waitHide}">
+	<div class="mainContent hide" id="mainContent" v-bind:class="{show: waitHide}">
 		<div class="todayInfo">
 			<div class="todayInfoWeatherType">{{todayInfo.currentWeather}}</div>
 			<div class="todayInfoWeatherTemperature">
@@ -411,6 +411,18 @@ header{
 		//var city = remote_ip_info['ip'];
 		var city = returnCitySN.cip;
 		document.getElementById("app").setAttribute("title", city);
+		var mainContent = document.getElementById("mainContent");
+		mainContent.addEventListener('scroll', function(){
+
+        alert(2)
+
+    	});
+		
+		mainContent.onscroll=function(){
+			alert(1)
+			var t =document.documentElement.scrollTop||document.body.scrollTop;
+			console.log(t);
+		}
 	</script>
     <script type="text/javascript" src="JS/autoAdaptation.js"></script>
     <script type="text/javascript" src="JS/vue.js"></script>
