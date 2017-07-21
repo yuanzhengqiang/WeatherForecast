@@ -1,3 +1,4 @@
+//自适应布局
 (function (doc, win) {
     // 分辨率Resolution适配
     var docEl = doc.documentElement,
@@ -14,3 +15,6 @@
     // 一物理像素在不同屏幕的显示效果不一样。要根据devicePixelRatio来修改meta标签的scale,要注释上面的meta标签
     document.getElementById('app').removeAttribute("class");
 })(document, window);
+
+//自动获取地理位置
+

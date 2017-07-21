@@ -8,7 +8,8 @@
 	<meta name="robots" content="index,nofollow"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
 	<meta content="telephone=no" name="format-detection" /> 
-	<title>weather</title>
+	<title>天气预报</title>
+	
 <style type="text/css">
 html{font-size: 100px;}
 body{
@@ -349,6 +350,7 @@ header{
 <!--<script type="text/javascript" src="http://www.coding123.net/getip.ashx?js=1"></script>
 <script type="text/javascript" src="https://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>-->
 <script type="text/javascript" src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
+
 </head>
 <body onload="load()">
 <div id="app" title="">
@@ -471,15 +473,15 @@ header{
 
 	<!-- 半透明遮罩 -->
 	<div class="shade" id="shade" onclick="closeModel()"></div>
+	
 </body>
-    
-    <script type="text/javascript" src="JS/autoAdaptation.js"></script>
+    <script type="text/javascript" src="JS/autoTool.js"></script>
     <script type="text/javascript" src="JS/vue.js"></script>
     <script type="text/javascript" src="JS/vue-resource.js"></script>
     <script type="text/javascript">
 		//var city = remote_ip_info['ip'];
-		var city = returnCitySN.cip;
-		document.getElementById("app").setAttribute("title", city);
+		//var city = returnCitySN.cip;
+    	//document.getElementById("app").setAttribute("title", city);
 		
     	function load() {
 			var mainContent = document.getElementById('mainContent');
@@ -557,22 +559,25 @@ header{
             mounted: function() {
 				//this.IP = ip.substr(1,ip.length);
 				//this.IP = remote_ip_info['city'];
-				var city = document.getElementById("app").getAttribute("title");
+				this.getLocationInfo();
+				/*var city = document.getElementById("app").getAttribute("title");
 				this.IP = city;
 				this.todayUrl = "https://sapi.k780.com/?app=weather.today&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json";
 				this.weekUrl = "https://sapi.k780.com/?app=weather.future&weaid="+this.IP+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json";
 				this.PM25Url = "https://sapi.k780.com/?app=weather.pm25&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json";
-				this.lifeUrl = "https://sapi.k780.com/?app=weather.lifeindex&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json";
-				this.getTodayInfo();
+				this.lifeUrl = "https://sapi.k780.com/?app=weather.lifeindex&weaid="+this.IP+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json";*/
+				/*this.getTodayInfo();
 				this.getPM25Info();
 				this.getWeekInfo();
-				this.getLifeInfo();
+				this.getLifeInfo();*/
+				
 			},
 			methods: {
-			    getTodayInfo: function() {//获取当前温度信息
+			    getTodayInfo: function(ip) {//获取当前温度信息
 			    	var that = this,
-			    		todayInfo = {};
-					this.$http.jsonp(this.todayUrl,{jsonp:'jsoncallback'}).then(function(data){
+			    		todayInfo = {},
+			    		todayUrl = "https://sapi.k780.com/?app=weather.today&weaid="+ip+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json";
+					this.$http.jsonp(todayUrl,{jsonp:'jsoncallback'}).then(function(data){
 			        	var info = data.data.result;
 			            todayInfo.city = info.citynm + "市";//当前城市
 			            todayInfo.cityTemp = info.citynm + "市 " + info.temperature_curr;//当前城市温度
@@ -596,10 +601,11 @@ header{
 		            	alert('获取当前温度信息失败');
 		            });
 				},
-				getPM25Info: function() {//获取PM2.5信息
+				getPM25Info: function(ip) {//获取PM2.5信息
 					var that = this,
-						pm25Info = {};
-					this.$http.jsonp(this.PM25Url,{jsonp:'jsoncallback'}).then(function(data){
+						pm25Info = {},
+						PM25Url = "https://sapi.k780.com/?app=weather.pm25&weaid="+ip+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json";
+					this.$http.jsonp(PM25Url,{jsonp:'jsoncallback'}).then(function(data){
 			        	var info = data.data.result;
 			            pm25Info.PMInfo = info.aqi + " " + info.aqi_levnm;//空气质量信息
 			            pm25Info.PMLevel = info.aqi_levid;//空气质量等级
@@ -615,9 +621,10 @@ header{
 		            	alert('获取PM2.5信息失败');
 		            });
 				},
-				getWeekInfo: function() {//获取一周内天气信息
-					var that = this;
-					this.$http.jsonp(this.weekUrl,{jsonp:'jsoncallback'}).then(function(data){
+				getWeekInfo: function(ip) {//获取一周内天气信息
+					var that = this,
+						weekUrl = "https://sapi.k780.com/?app=weather.future&weaid="+ip+"&appkey=26367&sign=bb23352cb3101781a1ee1fe888329766&format=json";
+					this.$http.jsonp(weekUrl,{jsonp:'jsoncallback'}).then(function(data){
 			        	var info = data.data.result,
 			        		weekInfoObj = {},
 							weekInfo = [];
@@ -655,9 +662,10 @@ header{
 		            	alert('获取一周内天气信息失败');
 		            });
 				},
-				getLifeInfo: function() {//获取一周内生活信息
-					var that = this;
-					this.$http.jsonp(this.lifeUrl,{jsonp:'jsoncallback'}).then(function(data){
+				getLifeInfo: function(ip) {//获取一周内生活信息
+					var that = this,
+						lifeUrl = "https://sapi.k780.com/?app=weather.lifeindex&weaid="+ip+"&appkey=26549&sign=48933e770c3c6304a93b080bbee06f4b&format=json";
+					this.$http.jsonp(lifeUrl,{jsonp:'jsoncallback'}).then(function(data){
 			        	var info = data.data.result,
 			        		infoList = that.entries(info),
 			        		lifeInfoObj = {},
@@ -748,11 +756,87 @@ header{
 						document.getElementById("modalAdviceBox").style.display = "block";
 						document.getElementById('modalAdvice').innerHTML = advice;
 					},200)
-					
-				/*},
-				closeModel: function() { 
-				    document.getElementById("shade").style.display = "none";
-					document.getElementById("modalAdviceBox").style.display = "none";*/
+				},
+				getLocationInfo: function() {
+					function Location(){};
+					Location.prototype.getLocation = function(callback){
+					  var options = {
+					    enableHighAccuracy: true,
+					    maximumAge: 1000
+					  };
+					  this.callback = Object.prototype.toString.call(callback) =="[object Function]" ?
+					    callback : 
+					    function(address){
+					      alert(address.province + address.city);
+					      console.log("getocation(callbackFunction) 可获得定位信息对象");
+					    };
+					  var self = this;
+					  if (navigator.geolocation) {
+					    //浏览器支持geolocation
+					    navigator.geolocation.getCurrentPosition(function(position){
+					      //经度
+					      var longitude = position.coords.longitude;
+					      //纬度
+					      var latitude = position.coords.latitude;
+					      self.loadMapApi(longitude,latitude);
+					    }, self.onError, options);
+					  } else {
+					    //浏览器不支持geolocation
+					    var city = returnCitySN.cip;
+					    that.getTodayInfo(city);
+						that.getPM25Info(city);
+						that.getWeekInfo(city);
+						that.getLifeInfo(city);
+					  }
+					};
+					Location.prototype.loadMapApi = function(longitude, latitude){
+					  var self = this;
+					  var oHead = document.getElementsByTagName('HEAD').item(0);
+					  var oScript= document.createElement("script");
+					  oScript.type = "text/javascript";
+					  oScript.src="http://api.map.baidu.com/getscript?v=2.0&ak=A396783ee700cfdb9ba1df281ce36862&services=&t=20140930184510";
+					  oHead.appendChild(oScript);
+					  oScript.onload = function(date){
+					    var point = new BMap.Point(longitude, latitude);
+					    var gc = new BMap.Geocoder();
+					    gc.getLocation(point, function(rs) {
+					      var addComp = rs.addressComponents;
+					      self.callback(addComp);
+					    });
+					  }
+					};
+					Location.prototype.onError = function(error) {
+						switch (error.code) {
+						    case 1:
+						      alert("位置服务被拒绝");
+
+						      break;
+						    case 2:
+						      alert("暂时获取不到位置信息");
+						      break;
+						    case 3:
+						      alert("获取信息超时");
+						      break;
+						    case 4:
+						      alert("未知错误");
+						      break;
+						}
+						var city = returnCitySN.cip;
+					    that.getTodayInfo(city);
+						that.getPM25Info(city);
+						that.getWeekInfo(city);
+						that.getLifeInfo(city);
+					};
+					var local = new Location();
+					var that = this;
+					local.getLocation(function(res){
+					 	//此处就是返回的地理位置信息
+						var city = res.district.replace("市", "");
+						that.getTodayInfo(city);
+						that.getPM25Info(city);
+						that.getWeekInfo(city);
+						that.getLifeInfo(city);
+					});
 				}
 			}
         })
