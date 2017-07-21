@@ -311,7 +311,7 @@ header{
 	width: 70vw;
     height: auto;
     background-color: white;
-    text-align: center;
+    text-align: left;
     display: none;
     z-index: 100;
     padding: 0.15rem 0.2rem;
@@ -336,6 +336,14 @@ header{
 	opacity: 0.5;
 	background-color: #000;
 	display: none;
+}
+.dim {
+    -moz-filter: blur(5px);
+    -webkit-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    filter: blur(5px);
+    filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=4, MakeShadow=false);
 }
 </style>
 <!--<script type="text/javascript" src="http://www.coding123.net/getip.ashx?js=1"></script>
@@ -384,7 +392,7 @@ header{
 			</div>
 		</div>
 		<div class="otherInfo">
-			<div class="otherInfoCenter" v-on:click="showModalAdvice(PM25Info.advice)">
+			<div class="otherInfoCenter">
 				<div class="otherInfoCenterTop">
 					<span class="otherInfoCenterTopImg imgLeft"></span>
 					<span class="otherInfoCenterTopName">{{todayInfo.wind}}</span>
@@ -455,15 +463,14 @@ header{
 			</div>
 		</div>
 	</div>
-
-	<!-- PM2.5建议 -->
+</div>
+<!-- 弹窗 -->
 	<div class="modalBox" id="modalAdviceBox">
 		<span id="modalAdvice" class="modalAdvice"></span>
 	</div>
 
 	<!-- 半透明遮罩 -->
-	<div class="shade" id="shade" v-on:click.self="closeModel()"></div>
-</div>
+	<div class="shade" id="shade" onclick="closeModel()"></div>
 </body>
     
     <script type="text/javascript" src="JS/autoAdaptation.js"></script>
@@ -483,10 +490,15 @@ header{
 		    	var alpha = 0 - (todayInfoTop - headerHight) ;//透明度值变量
 		        if (alpha > -1 && alpha < 150) {
 					var header = document.getElementById('header'); //获取DOM元素对象
-					console.log(alpha);
 					header.style.opacity = alpha / 150; //设置fierfox等透明度，注意透明度值是小数
 		        }
 		    });
+		}
+
+		function closeModel() {
+			document.getElementById("app").removeAttribute("class", "dim"); 
+			document.getElementById("shade").style.display = "none";
+			document.getElementById("modalAdviceBox").style.display = "none";
 		}
 	</script>
     <script>
@@ -730,13 +742,17 @@ header{
 				    return arr;  
 				},
 				showModalAdvice: function(advice) {
-					document.getElementById("shade").style.display = "block";
-					document.getElementById("modalAdviceBox").style.display = "block";
-					document.getElementById('modalAdvice').innerHTML = advice;
-				},
+					setTimeout(function() {
+						document.getElementById("app").setAttribute("class", "dim"); 
+						document.getElementById("shade").style.display = "block";
+						document.getElementById("modalAdviceBox").style.display = "block";
+						document.getElementById('modalAdvice').innerHTML = advice;
+					},200)
+					
+				/*},
 				closeModel: function() { 
 				    document.getElementById("shade").style.display = "none";
-					document.getElementById("modalAdviceBox").style.display = "none";
+					document.getElementById("modalAdviceBox").style.display = "none";*/
 				}
 			}
         })
