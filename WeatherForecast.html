@@ -744,7 +744,7 @@ header{
 				},
 				entries: function(obj) {  
 				    var arr = [];  
-				    for (var key in Object.keys(obj)) {  
+				    for (var key of Object.keys(obj)) {  
 				        arr.push([key, obj[key]]);  
 				    }  
 				    return arr;  
