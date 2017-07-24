@@ -743,9 +743,10 @@ header{
 					return "";
 				},
 				entries: function(obj) {  
-				    var arr = [];  
-				    for (var key of Object.keys(obj)) {  
-				        arr.push([key, obj[key]]);  
+				    var arr = [],
+				    	objArr = Object.keys(obj); 
+				    for (var i = 0; i < OobjArr.length; i++) {  
+				        arr.push(objArr[i], obj[[objArr[i]]]);  
 				    }  
 				    return arr;  
 				},
