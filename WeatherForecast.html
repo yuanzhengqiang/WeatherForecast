@@ -670,9 +670,9 @@ header{
 			        		lifeInfoObj = {},
 							lifeInfo = [];
 			            for (var i = 0; i < infoList.length; i++) {
-			            	var itemName = infoList[i][0].replace(/-0/g, "-"),
-			            		itemDes = infoList[i][1];
 			            	if (i === 0) {
+			            		var itemName = infoList[0].replace(/-0/g, "-"),
+			            		itemDes = infoList[1];
 			            		that.setLifeInfo(itemDes);
 			            	} else {
 			            		//that.setCookie(itemName,itemDes,i);
@@ -794,7 +794,7 @@ header{
 					  var oHead = document.getElementsByTagName('HEAD').item(0);
 					  var oScript= document.createElement("script");
 					  oScript.type = "text/javascript";
-					  oScript.src="https://api.map.baidu.com/getscript?v=2.0&ak=A396783ee700cfdb9ba1df281ce36862&services=&t=20140930184510";
+					  oScript.src="http://api.map.baidu.com/getscript?v=2.0&ak=A396783ee700cfdb9ba1df281ce36862&services=&t=20170717103214";
 					  oHead.appendChild(oScript);
 					  oScript.onload = function(date){
 					    var point = new BMap.Point(longitude, latitude);
