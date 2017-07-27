@@ -393,7 +393,7 @@ header{
 				<span class="weekInfoRowRight">{{week.temp}}</span>
 			</div>
 		</div>
-		<div class="otherInfo">
+		<div class="otherInfo" id="otherInfo">
 			<div class="otherInfoCenter">
 				<div class="otherInfoCenterTop">
 					<span class="otherInfoCenterTopImg imgLeft"></span>
@@ -495,54 +495,6 @@ header{
 					header.style.opacity = alpha / 150; //设置fierfox等透明度，注意透明度值是小数
 		        }
 		    });
-		}
-
-		function clickRuffle() {
-			//可以执行一次点击效果
-        var oneClick = true;
-        document.getElementById("btn1").addEventListener('click',function(e){
-            //判断是否可以执行一次点击效果
-                // --因为执行波浪效果需要时间，一次波浪结束之后允许执行下一次点击
-            if (oneClick){
-            	console.log(this.innerHTML)
-                this.innerHTML += "<span id='span'></span>";
-
-                var event = e || window.event;
-                var x = event.clientX;
-                var y = event.clientY;
-                //获取按钮的坐标
-                var moveX = document.getElementById("btn1").offsetLeft;
-                var moveY = document.getElementById("btn1").offsetTop;
-                //获取按钮宽度
-                var btnWidth = document.getElementById("btn1").clientWidth;
-                var btnHeight = document.getElementById("btn1").clientHeight;
-                //设置点击后波浪样式
-                document.getElementById("span").style.position= "absolute";
-                document.getElementById("span").style.width = parseInt(btnHeight)*3+'px';
-                document.getElementById("span").style.left = x-moveX+'px';
-                document.getElementById("span").style.marginLeft = -(btnHeight*1.5)+'px';
-                document.getElementById("span").style.height = parseInt(btnHeight)*3+'px';
-                document.getElementById("span").style.top = y-moveY+'px';
-                document.getElementById("span").style.marginTop = -(btnHeight*1.5)+'px';
-                document.getElementById("span").style.backgroundColor = "#CCCCCC";;
-				document.getElementById("span").style.borderRadius = "50%";
-                document.getElementById("span").style.webkitAnimation = "circleIn 0.7s linear";
-                document.getElementById("span").style.animation = "circleIn 0.7s linear";
-                document.getElementById("span").style.display = "block";
-                document.getElementById("span").style.animationFillMode = "forwards";
-                document.getElementById("span").style.webkitAnimationFillMode = "forwards";
-                
-                //定时删除波浪
-               setTimeout(function(){
-                    document.getElementById("span").remove();
-                    oneClick = true;
-                },710);
-                //不可以执行一次点击效果
-                oneClick = false;
-            }else {
-                return false;
-            }
-        })
 		}
 
 		function closeModel() {
