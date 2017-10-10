@@ -796,14 +796,14 @@ header{
 					};
 					Location.prototype.onError = function(error) {
 						var city = returnCitySN.cip;
-						switch (error.code) {
+						/*switch (error.code) {
 						    case 1:
 						      //alert("位置服务被拒绝");
 						      city = "1";
 						      break;
 						    case 2:
 						      //alert("暂时获取不到位置信息");
-						      city = "1";
+						      
 						      break;
 						    case 3:
 						      //alert("获取信息超时");
@@ -813,6 +813,9 @@ header{
 						      //alert("未知错误");
 						      city = "1";
 						      break;
+						}*/
+						if (returnCitySN.cname.match(/[^\u4e00-\u9fa5]/g)) {
+							city = "1";
 						}
 						
 					    that.getTodayInfo(city);
