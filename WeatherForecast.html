@@ -795,22 +795,26 @@ header{
 					  }
 					};
 					Location.prototype.onError = function(error) {
+						var city = returnCitySN.cip;
 						switch (error.code) {
 						    case 1:
-						      alert("位置服务被拒绝");
-
+						      //alert("位置服务被拒绝");
+						      city = "1";
 						      break;
 						    case 2:
-						      alert("暂时获取不到位置信息");
+						      //alert("暂时获取不到位置信息");
+						      city = "1";
 						      break;
 						    case 3:
-						      alert("获取信息超时");
+						      //alert("获取信息超时");
+						      city = "1";
 						      break;
 						    case 4:
-						      alert("未知错误");
+						      //alert("未知错误");
+						      city = "1";
 						      break;
 						}
-						var city = returnCitySN.cip;
+						
 					    that.getTodayInfo(city);
 						that.getPM25Info(city);
 						that.getWeekInfo(city);
