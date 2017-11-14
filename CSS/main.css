@@ -131,7 +131,7 @@ header{
 .todayInfoWeatherPMDiv:active .todayInfoWeatherPMImg{
     width: 0.16rem;
     height: 0.16rem;
-    background: url(IMG/whitePM.png) no-repeat center;
+    background: url(../IMG/whitePM.png) no-repeat center;
     background-size: 100%;
     display: inline-block;
     position: relative;
@@ -140,7 +140,7 @@ header{
 .todayInfoWeatherPMImg{
     width: 0.16rem;
     height: 0.16rem;
-    background: url(IMG/bluePM.png) no-repeat center;
+    background: url(../IMG/bluePM.png) no-repeat center;
     background-size: 100%;
     display: inline-block;
     position: relative;
@@ -211,15 +211,15 @@ header{
     font-size: 0.1rem;
 }
 .imgLeft{
-    background-image: url(IMG/其他/风向.png);
+    background-image: url(../IMG/其他/风向.png);
     background-size: 100%;
 }
 .imgCenter{
-    background-image: url(IMG/其他/水滴.png);
+    background-image: url(../IMG/其他/水滴.png);
     background-size: 100%;
 }
 .imgRight{
-    background-image: url(IMG/其他/温度计.png);
+    background-image: url(../IMG/其他/温度计.png);
     background-size: 100%;
 }
 .otherInfoCenterTopName{
